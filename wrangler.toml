@@ -1,0 +1,23 @@
+name = "ziffir"
+compatibility_date = "2026-07-15"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "dist"
+
+[assets]
+directory = "./dist"
+
+
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[observability.traces]
+enabled = false
+persist = true
+head_sampling_rate = 1

@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =========================================================================
+    // RÈGLES DE SÉCURITÉ ZAPHIR — Toutes les écritures/lectures directes
+    // par le backend utilisent firebase-admin et contournent ces règles.
+    // Ces règles s'appliquent uniquement aux accès directs depuis les clients
+    // (navigateur, app mobile) — ceux-ci sont REFUSÉS par défaut.
+    // =========================================================================
+
+    // Profils utilisateurs : lecture par l'utilisateur lui-même uniquement
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if false; // Géré exclusivement par le serveur (admin SDK)
+    }
+
+    // Demandes de démo (formulaire public de contact) : écriture autorisée
+    // car le formulaire de démo est public et ne lit rien de sensible
+    match /demo_requests/{docId} {
+      allow create: if true;
+      allow read, update, delete: if false;
+    }
+
+    // Tous les autres documents (tenants, settings, logs, orders…) :
+    // accès refusé aux clients directs. Le serveur Node.js utilise
+    // firebase-admin SDK qui n'est pas soumis à ces règles.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
