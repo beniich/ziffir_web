@@ -67,7 +67,7 @@ export const registerWithEmail = async (email: string, password: string, display
       console.warn("Could not pre-create user profile in Firestore:", profileErr);
     }
     return user;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Registration error:', error);
     throw error;
   }
@@ -78,7 +78,7 @@ export const loginWithEmail = async (email: string, password: string): Promise<U
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return userCredential.user;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Login error:', error);
     throw error;
   }
@@ -95,7 +95,7 @@ export const googleSignIn = async (): Promise<{ user: User; accessToken: string 
 
     cachedAccessToken = credential.accessToken;
     return { user: result.user, accessToken: cachedAccessToken };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Sign in error:', error);
     throw error;
   }
@@ -110,7 +110,7 @@ export const logout = async () => {
   cachedAccessToken = null;
 };
 
-export const getOrCreateUserProfile = async (user: User): Promise<any> => {
+export const getOrCreateUserProfile = async (user: User): Promise<Record<string, unknown>> => {
   try {
     const userDocRef = doc(db, 'users', user.uid);
     const userSnap = await getDoc(userDocRef);
@@ -120,7 +120,7 @@ export const getOrCreateUserProfile = async (user: User): Promise<any> => {
 
     // Try finding by email across all users in case of pre-seeded users
     const querySnap = await getDocs(collection(db, 'users'));
-    let foundUser: any = null;
+    let foundUser: Record<string, unknown> | null = null;
     querySnap.forEach(d => {
       const data = d.data();
       if (data.email && data.email.toLowerCase() === user.email?.toLowerCase()) {
@@ -278,7 +278,7 @@ export const firestoreService = {
       const snap = await getDocs(collection(db, 'settings'));
       const configItem = snap.docs.find(d => d.id === 'config');
       if (configItem) {
-        return configItem.data() as any;
+        return configItem.data() as { sheetId: string; sheetName: string; liveSync: boolean };
       }
       return null;
     } catch (err) {

@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 /**
  * Empty validation helper pass-through for development
  */
-export const validate = (_schema: any) => (req: Request, res: Response, next: NextFunction) => {
+export const validate = (_schema: unknown) => (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 

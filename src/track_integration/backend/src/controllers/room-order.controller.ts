@@ -25,8 +25,9 @@ export class RoomOrderController {
       });
 
       res.json({ success: true, data: orders });
-    } catch (err: any) {
-      logger.error({ err: err.message, userId: (req.user as any)?.userId }, 'list orders failed');
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      logger.error({ err: errorMessage, userId: (req.user as any)?.userId }, 'list orders failed');
       const status = err.statusCode || 500;
       res.status(status).json({ success: false, error: err.message });
     }
@@ -49,9 +50,10 @@ export class RoomOrderController {
       }
 
       res.json({ success: true, data: order });
-    } catch (err: any) {
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
       const status = err.statusCode || 500;
-      res.status(status).json({ success: false, error: err.message });
+      res.status(status).json({ success: false, error: errorMessage });
     }
   }
 
@@ -65,14 +67,14 @@ export class RoomOrderController {
 
       // Calcul des totaux
       let subtotal = 0;
-      const orderItems: any[] = [];
+      const orderItems: Record<string, unknown>[] = [];
 
       for (const item of items) {
         // Try/catch safety since database client models might vary in student setups
         let coursePrice = 100;
         let courseName = 'Item name';
         try {
-          const course = await (prisma as any).course.findUnique({
+          const course = await (prisma as Record<string, any>).course.findUnique({
             where: { code: item.courseCode },
           });
           if (course) {
@@ -133,9 +135,10 @@ export class RoomOrderController {
       });
 
       res.status(201).json({ success: true, data: order });
-    } catch (err: any) {
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
       const status = err.statusCode || 500;
-      res.status(status).json({ success: false, error: err.message });
+      res.status(status).json({ success: false, error: errorMessage });
     }
   }
 
@@ -182,9 +185,10 @@ export class RoomOrderController {
       });
 
       res.json({ success: true, data: updated });
-    } catch (err: any) {
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
       const status = err.statusCode || 500;
-      res.status(status).json({ success: false, error: err.message });
+      res.status(status).json({ success: false, error: errorMessage });
     }
   }
 
@@ -213,9 +217,10 @@ export class RoomOrderController {
       });
 
       res.json({ success: true, data: updated });
-    } catch (err: any) {
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
       const status = err.statusCode || 500;
-      res.status(status).json({ success: false, error: err.message });
+      res.status(status).json({ success: false, error: errorMessage });
     }
   }
 
@@ -232,9 +237,10 @@ export class RoomOrderController {
       await cacheService.invalidatePattern('room-orders:*');
 
       res.json({ success: true, message: 'Commande supprimée' });
-    } catch (err: any) {
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
       const status = err.statusCode || 500;
-      res.status(status).json({ success: false, error: err.message });
+      res.status(status).json({ success: false, error: errorMessage });
     }
   }
 }

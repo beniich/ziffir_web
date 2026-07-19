@@ -13,7 +13,7 @@ router.use(requireAuth);
 // GET /api/team/members?hotelId=xxx
 // Liste les membres d'un hôtel
 // ----------------------------------------------------------------------------
-router.get('/members', async (req: any, res) => {
+router.get('/members', async (req: import("express").Request, res) => {
   const { hotelId } = req.query;
   
   if (!hotelId) {
@@ -79,7 +79,7 @@ const updateMemberSchema = z.object({
 
 router.patch('/members/:id', 
   requirePermission('members.invite'),
-  async (req: any, res) => {
+  async (req: import("express").Request, res) => {
     const parsed = updateMemberSchema.safeParse(req.body);
     if (!parsed.success) {
       return res.status(400).json({ 
@@ -181,7 +181,7 @@ router.patch('/members/:id',
 // ----------------------------------------------------------------------------
 router.delete('/members/:id',
   requirePermission('members.remove'),
-  async (req: any, res) => {
+  async (req: import("express").Request, res) => {
     const targetMembership = await prisma.hotelMembership.findUnique({
       where: { id: req.params.id },
     });
@@ -274,7 +274,7 @@ router.delete('/members/:id',
 // ----------------------------------------------------------------------------
 // GET /api/team/invitations?hotelId=xxx
 // ----------------------------------------------------------------------------
-router.get('/invitations', async (req: any, res) => {
+router.get('/invitations', async (req: import("express").Request, res) => {
   const { hotelId } = req.query;
   
   if (!hotelId) {
@@ -318,7 +318,7 @@ router.get('/invitations', async (req: any, res) => {
 // ----------------------------------------------------------------------------
 router.delete('/invitations/:id',
   requirePermission('members.invite'),
-  async (req: any, res) => {
+  async (req: import("express").Request, res) => {
     const invitation = await prisma.hotelInvitation.findUnique({
       where: { id: req.params.id },
     });

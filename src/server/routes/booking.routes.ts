@@ -121,11 +121,12 @@ router.post('/create', async (req: Request, res: Response) => {
         status: booking.status,
       },
     });
-  } catch (e: any) {
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : String(e);
     console.error('[booking] POST /create error', e);
     res.status(500).json({
       success: false,
-      error: { message: e.message || 'Erreur serveur' },
+      error: { message: errorMessage || 'Erreur serveur' },
     });
   }
 });
@@ -150,7 +151,7 @@ router.get('/confirm/:code', async (req: Request, res: Response) => {
     }
 
     res.json({ success: true, data: booking });
-  } catch (e: any) {
+  } catch (e: unknown) {
     res.status(500).json({ success: false, error: { message: 'Erreur serveur' } });
   }
 });

@@ -12,9 +12,9 @@ const prisma = new PrismaClient();
 // GENERIC SECURE DELEGATE FACTORY
 // ==========================================
 
-function buildSecureDelegate(model: any, subject: Subject) {
+function buildSecureDelegate(model: Record<string, Function>, subject: Subject) {
   return {
-    findMany: async (ctx: UserContext, args: any = {}) => {
+    findMany: async (ctx: UserContext, args: { where?: Record<string, unknown>; [key: string]: unknown } = {}) => {
       PermissionsService.require(ctx, 'read', subject);
       const filter = PermissionsService.getPrismaFilter(ctx, subject);
       // Fallback because prisma is abstract in test contexts
@@ -25,7 +25,7 @@ function buildSecureDelegate(model: any, subject: Subject) {
       }
     },
 
-    findUnique: async (ctx: UserContext, id: string, args: any = {}) => {
+    findUnique: async (ctx: UserContext, id: string, args: { where?: Record<string, unknown>; [key: string]: unknown } = {}) => {
       PermissionsService.require(ctx, 'read', subject);
       const filter = PermissionsService.getPrismaFilter(ctx, subject);
       try {
@@ -38,7 +38,7 @@ function buildSecureDelegate(model: any, subject: Subject) {
       }
     },
 
-    findFirst: async (ctx: UserContext, args: any = {}) => {
+    findFirst: async (ctx: UserContext, args: { where?: Record<string, unknown>; [key: string]: unknown } = {}) => {
       PermissionsService.require(ctx, 'read', subject);
       const filter = PermissionsService.getPrismaFilter(ctx, subject);
       try {
@@ -48,7 +48,7 @@ function buildSecureDelegate(model: any, subject: Subject) {
       }
     },
 
-    count: async (ctx: UserContext, args: any = {}) => {
+    count: async (ctx: UserContext, args: { where?: Record<string, unknown>; [key: string]: unknown } = {}) => {
       PermissionsService.require(ctx, 'read', subject);
       const filter = PermissionsService.getPrismaFilter(ctx, subject);
       try {
@@ -58,7 +58,7 @@ function buildSecureDelegate(model: any, subject: Subject) {
       }
     },
 
-    create: async (ctx: UserContext, data: any, args: any = {}) => {
+    create: async (ctx: UserContext, data: Record<string, unknown>, args: { where?: Record<string, unknown>; [key: string]: unknown } = {}) => {
       PermissionsService.require(ctx, 'create', subject);
       const enrichedData = enforceHotelId(ctx, subject, data);
       try {
@@ -68,7 +68,7 @@ function buildSecureDelegate(model: any, subject: Subject) {
       }
     },
 
-    createMany: async (ctx: UserContext, data: any, args: any = {}) => {
+    createMany: async (ctx: UserContext, data: Record<string, unknown>, args: { where?: Record<string, unknown>; [key: string]: unknown } = {}) => {
       PermissionsService.require(ctx, 'create', subject);
       const enrichedData = enforceHotelId(ctx, subject, data);
       try {
@@ -78,7 +78,7 @@ function buildSecureDelegate(model: any, subject: Subject) {
       }
     },
 
-    update: async (ctx: UserContext, id: string, data: any, args: any = {}) => {
+    update: async (ctx: UserContext, id: string, data: Record<string, unknown>, args: { where?: Record<string, unknown>; [key: string]: unknown } = {}) => {
       PermissionsService.require(ctx, 'update', subject);
       const filter = PermissionsService.getPrismaFilter(ctx, subject);
       try {
@@ -92,7 +92,7 @@ function buildSecureDelegate(model: any, subject: Subject) {
       }
     },
 
-    updateMany: async (ctx: UserContext, args: any) => {
+    updateMany: async (ctx: UserContext, args: { where?: Record<string, unknown>; [key: string]: unknown }) => {
       PermissionsService.require(ctx, 'update', subject);
       const filter = PermissionsService.getPrismaFilter(ctx, subject);
       try {
@@ -112,7 +112,7 @@ function buildSecureDelegate(model: any, subject: Subject) {
       }
     },
 
-    deleteMany: async (ctx: UserContext, args: any = {}) => {
+    deleteMany: async (ctx: UserContext, args: { where?: Record<string, unknown>; [key: string]: unknown } = {}) => {
       PermissionsService.require(ctx, 'delete', subject);
       const filter = PermissionsService.getPrismaFilter(ctx, subject);
       try {
@@ -127,7 +127,7 @@ function buildSecureDelegate(model: any, subject: Subject) {
 /**
  * Enforces correct hotelId mapping upon create/write paths based on subject context
  */
-function enforceHotelId(ctx: UserContext, subject: Subject, data: any): any {
+function enforceHotelId(ctx: UserContext, subject: Subject, data: Record<string, unknown>): any {
   const TENANT_SUBJECTS: Subject[] = [
     'Hotel',
     'RoomOrder',
@@ -172,14 +172,14 @@ function enforceHotelId(ctx: UserContext, subject: Subject, data: any): any {
 // ==========================================
 
 export const securePrisma = {
-  roomOrder:      buildSecureDelegate((prisma as any).roomServiceOrder || (prisma as any).roomOrder || {}, 'RoomOrder'),
-  room:           buildSecureDelegate((prisma as any).room || {}, 'Room'),
-  staff:          buildSecureDelegate((prisma as any).staffMember || {}, 'StaffMember'),
-  vault:          buildSecureDelegate((prisma as any).vaultDocument || {}, 'VaultDocument'),
-  suiteControl:   buildSecureDelegate((prisma as any).suiteControl || {}, 'SuiteControl'),
-  pricing:        buildSecureDelegate((prisma as any).pricingRule || {}, 'PricingRule'),
-  course:         buildSecureDelegate((prisma as any).course || {}, 'Course'),
-  hotel:          buildSecureDelegate((prisma as any).hotel || {}, 'Hotel'),
-  audit:          buildSecureDelegate((prisma as any).auditLog || {}, 'AuditLog'),
-  user:           buildSecureDelegate((prisma as any).user || {}, 'User'),
+  roomOrder:      buildSecureDelegate((prisma as Record<string, any>).roomServiceOrder || (prisma as Record<string, any>).roomOrder || {}, 'RoomOrder'),
+  room:           buildSecureDelegate((prisma as Record<string, any>).room || {}, 'Room'),
+  staff:          buildSecureDelegate((prisma as Record<string, any>).staffMember || {}, 'StaffMember'),
+  vault:          buildSecureDelegate((prisma as Record<string, any>).vaultDocument || {}, 'VaultDocument'),
+  suiteControl:   buildSecureDelegate((prisma as Record<string, any>).suiteControl || {}, 'SuiteControl'),
+  pricing:        buildSecureDelegate((prisma as Record<string, any>).pricingRule || {}, 'PricingRule'),
+  course:         buildSecureDelegate((prisma as Record<string, any>).course || {}, 'Course'),
+  hotel:          buildSecureDelegate((prisma as Record<string, any>).hotel || {}, 'Hotel'),
+  audit:          buildSecureDelegate((prisma as Record<string, any>).auditLog || {}, 'AuditLog'),
+  user:           buildSecureDelegate((prisma as Record<string, any>).user || {}, 'User'),
 };

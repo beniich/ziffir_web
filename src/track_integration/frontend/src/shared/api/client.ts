@@ -55,7 +55,7 @@ export class ApiClient {
     return this.request<T>(endpoint, { ...options, method: 'GET' });
   }
 
-  static post<T>(endpoint: string, body?: any, options?: FetchOptions): Promise<T> {
+  static post<T>(endpoint: string, body?: Record<string, unknown> | null, options?: FetchOptions): Promise<T> {
     return this.request<T>(endpoint, { 
       ...options, 
       method: 'POST', 
@@ -63,7 +63,7 @@ export class ApiClient {
     });
   }
 
-  static put<T>(endpoint: string, body?: any, options?: FetchOptions): Promise<T> {
+  static put<T>(endpoint: string, body?: Record<string, unknown> | null, options?: FetchOptions): Promise<T> {
     return this.request<T>(endpoint, { 
       ...options, 
       method: 'PUT', 

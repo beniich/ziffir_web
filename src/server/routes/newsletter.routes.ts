@@ -65,7 +65,7 @@ router.post('/subscribe', async (req, res) => {
     console.log(`Mock: Envoi email à ${email} pour confirmation à l'url ${confirmUrl}`);
 
     res.json({ success: true, data: { status: 'confirm_email_sent' }});
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Newsletter error:', error);
     res.status(500).json({ success: false, error: { message: 'Internal Server Error' } });
   }

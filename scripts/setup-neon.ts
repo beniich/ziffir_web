@@ -26,8 +26,9 @@ async function verifyConnection() {
     await prisma.$connect();
     const result = await prisma.$queryRaw<{ now: Date }[]>`SELECT NOW()`;
     console.log(`   ✅ Connecté à Neon PostgreSQL — Serveur: ${result[0].now.toISOString()}`);
-  } catch (e: any) {
-    console.error('   ❌ Connexion échouée :', e.message);
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : String(e);
+    console.error('   ❌ Connexion échouée :', message);
     process.exit(1);
   }
 }
@@ -79,8 +80,9 @@ async function verifyTables() {
     } else {
       console.log('   ✅ Toutes les tables essentielles sont présentes');
     }
-  } catch (e: any) {
-    console.error('   ❌ Erreur vérification tables :', e.message);
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : String(e);
+    console.error('   ❌ Erreur vérification tables :', message);
   } finally {
     await prisma.$disconnect();
   }

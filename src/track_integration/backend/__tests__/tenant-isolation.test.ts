@@ -37,7 +37,7 @@ describe('🔒 Tenant Isolation End-To-End Security Model', () => {
       const rawWritePayload = { guestName: 'Hacker Attempt', roomNumber: '999', hotelId: 'hotel-B' };
       
       // Under wrapped securePrisma create path, user credentials force hotelA constraint
-      const simulatedCreate = async (ctx: UserContext, data: any) => {
+      const simulatedCreate = async (ctx: UserContext, data: Record<string, unknown>) => {
         PermissionsService.require(ctx, 'create', 'RoomOrder');
         if (ctx.role === 'HOTEL') {
           return { ...data, hotelId: ctx.hotelId };

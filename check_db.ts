@@ -8,8 +8,9 @@ async function main() {
     console.log('Database connected!');
     const users = await prisma.user.count()
     console.log(`Found ${users} users`)
-  } catch (e: any) {
-    console.error('Database connection failed:', e.message)
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : String(e);
+    console.error('Database connection failed:', message)
   } finally {
     await prisma.$disconnect()
   }

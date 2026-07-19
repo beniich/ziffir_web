@@ -43,8 +43,9 @@ router.post('/register', async (req, res) => {
     });
     
     res.status(201).json({ success: true, data: auth });
-  } catch (e: any) {
-    res.status(400).json({ success: false, error: { message: e.message } });
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : String(e);
+    res.status(400).json({ success: false, error: { message: errorMessage } });
   }
 });
 
@@ -80,8 +81,9 @@ router.post('/login', async (req, res) => {
     });
     
     res.json({ success: true, data: auth });
-  } catch (e: any) {
-    if (e.message === '2FA_REQUIRED') {
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : String(e);
+    if (errorMessage === '2FA_REQUIRED') {
       return res.json({ success: true, data: { requiresTotp: true } });
     }
     res.status(401).json({ success: false, error: { message: e.message } });
@@ -99,21 +101,22 @@ router.post('/refresh', async (req, res) => {
     const tokens = await authService.refresh(refreshToken);
     authService.setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
     res.json({ success: true });
-  } catch (e: any) {
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : String(e);
     authService.clearAuthCookies(res);
-    res.status(401).json({ success: false, error: { message: e.message } });
+    res.status(401).json({ success: false, error: { message: errorMessage } });
   }
 });
 
 // POST /api/auth/logout
-router.post('/logout', requireAuth, async (req: any, res) => {
+router.post('/logout', requireAuth, async (req: import("express").Request, res) => {
   await authService.logout(req.auth.sessionId);
   authService.clearAuthCookies(res);
   res.json({ success: true });
 });
 
 // GET /api/auth/me
-router.get('/me', requireAuth, async (req: any, res) => {
+router.get('/me', requireAuth, async (req: import("express").Request, res) => {
   const auth = await authService.buildAuthResult(
     req.auth.sub,
     req.auth.sessionId,
@@ -123,7 +126,7 @@ router.get('/me', requireAuth, async (req: any, res) => {
 });
 
 // POST /api/auth/team/hotels/:hotelId/switch
-router.post('/team/hotels/:hotelId/switch', requireAuth, async (req: any, res) => {
+router.post('/team/hotels/:hotelId/switch', requireAuth, async (req: import("express").Request, res) => {
   try {
     const { accessToken } = await authService.switchHotel(
       req.auth.sub,
@@ -146,8 +149,9 @@ router.post('/team/hotels/:hotelId/switch', requireAuth, async (req: any, res) =
     );
     
     res.json({ success: true, data: auth });
-  } catch (e: any) {
-    res.status(403).json({ success: false, error: { message: e.message } });
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : String(e);
+    res.status(403).json({ success: false, error: { message: errorMessage } });
   }
 });
 
@@ -162,7 +166,7 @@ const inviteSchema = z.object({
   message: z.string().optional(),
 });
 
-router.post('/team/invitations', requireAuth, async (req: any, res) => {
+router.post('/team/invitations', requireAuth, async (req: import("express").Request, res) => {
   const parsed = inviteSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ success: false, error: { message: 'Données invalides' } });
@@ -189,8 +193,9 @@ router.post('/team/invitations', requireAuth, async (req: any, res) => {
     });
     
     res.status(201).json({ success: true, data: result });
-  } catch (e: any) {
-    res.status(400).json({ success: false, error: { message: e.message } });
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : String(e);
+    res.status(400).json({ success: false, error: { message: errorMessage } });
   }
 });
 
@@ -215,8 +220,9 @@ router.post('/invitation/:token/accept', async (req, res) => {
     
     authService.setAuthCookies(res, accessToken, refreshToken);
     res.json({ success: true, data: auth });
-  } catch (e: any) {
-    res.status(400).json({ success: false, error: { message: e.message } });
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : String(e);
+    res.status(400).json({ success: false, error: { message: errorMessage } });
   }
 });
 
@@ -244,8 +250,9 @@ router.post('/google', async (req, res) => {
     });
 
     res.json({ success: true, data: auth });
-  } catch (e: any) {
-    res.status(401).json({ success: false, error: { message: e.message } });
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : String(e);
+    res.status(401).json({ success: false, error: { message: errorMessage } });
   }
 });
 

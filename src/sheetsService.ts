@@ -62,7 +62,7 @@ export const sheetsService = {
   },
 
   // Read range of value arrays
-  async readValues(spreadsheetId: string, range: string, token: string): Promise<any[][] | null> {
+  async readValues(spreadsheetId: string, range: string, token: string): Promise<string[][] | null> {
     const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}`, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -80,7 +80,7 @@ export const sheetsService = {
   },
 
   // Write sheet values in an absolute range (PUT overrides)
-  async writeValues(spreadsheetId: string, range: string, values: any[][], token: string): Promise<any> {
+  async writeValues(spreadsheetId: string, range: string, values: string[][], token: string): Promise<Record<string, unknown>> {
     const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}?valueInputOption=USER_ENTERED`, {
       method: 'PUT',
       headers: {
@@ -103,7 +103,7 @@ export const sheetsService = {
   },
 
   // Append values list beautifully (POST appends)
-  async appendValues(spreadsheetId: string, range: string, values: any[][], token: string): Promise<any> {
+  async appendValues(spreadsheetId: string, range: string, values: string[][], token: string): Promise<Record<string, unknown>> {
     const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}:append?valueInputOption=USER_ENTERED`, {
       method: 'POST',
       headers: {
@@ -126,7 +126,7 @@ export const sheetsService = {
   },
 
   // Clear range of records
-  async clearRange(spreadsheetId: string, range: string, token: string): Promise<any> {
+  async clearRange(spreadsheetId: string, range: string, token: string): Promise<Record<string, unknown>> {
     const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}:clear`, {
       method: 'POST',
       headers: {

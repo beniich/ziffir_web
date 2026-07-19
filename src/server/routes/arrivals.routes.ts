@@ -203,9 +203,10 @@ router.post('/', async (req: Request, res: Response) => {
     eventBus.publish('logistics:arrival', { hotelId, arrivalId: arrival.id, guestName, vipLevel });
 
     res.status(201).json({ success: true, data: { arrival, taskCount } });
-  } catch (e: any) {
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : String(e);
     console.error('[arrivals] POST /', e);
-    res.status(500).json({ success: false, error: { message: e.message || 'Erreur serveur' } });
+    res.status(500).json({ success: false, error: { message: errorMessage || 'Erreur serveur' } });
   }
 });
 

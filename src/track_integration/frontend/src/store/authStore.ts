@@ -53,8 +53,9 @@ export class AuthStore {
       this.state.isLoading = false;
       this.emit();
       return true;
-    } catch (err: any) {
-      this.state.error = err.message || 'Identity authentication failed.';
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      this.state.error = errorMessage || 'Identity authentication failed.';
       this.state.isLoading = false;
       this.emit();
       return false;

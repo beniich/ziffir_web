@@ -74,8 +74,9 @@ const PORT = process.env.PORT || 3000;
     try {
       const state = await microserviceService.getAllStates(req.user?.tenantId || 'default');
       res.json(state);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message || 'Error fetching state' });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage || 'Error fetching state' });
     }
   });
 
@@ -84,16 +85,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getArrivals(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/logistics/arrivals', async (req, res) => {
     try {
       await microserviceService.saveArrivals(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -102,16 +105,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getFleet(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/logistics/fleet', async (req, res) => {
     try {
       await microserviceService.saveFleet(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -120,16 +125,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getHeatmap(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/logistics/heatmap', async (req, res) => {
     try {
       await microserviceService.saveHeatmap(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -138,16 +145,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getYachting(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/logistics/yachting', async (req, res) => {
     try {
       await microserviceService.saveYachting(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -156,16 +165,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getRoomService(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/hospitality/room-service', async (req, res) => {
     try {
       await microserviceService.saveRoomService(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -174,16 +185,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getSuiteControls(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/hospitality/suite-controls', async (req, res) => {
     try {
       await microserviceService.saveSuiteControls(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -192,16 +205,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getSuitePortal(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/hospitality/suite-portal', async (req, res) => {
     try {
       await microserviceService.saveSuitePortal(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -210,16 +225,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getWellness(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/hospitality/wellness', async (req, res) => {
     try {
       await microserviceService.saveWellness(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -228,16 +245,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getWineCellar(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/commerce/wine-cellar', async (req, res) => {
     try {
       await microserviceService.saveWineCellar(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -246,16 +265,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getMemberships(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/commerce/memberships', async (req, res) => {
     try {
       await microserviceService.saveMemberships(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -264,16 +285,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getMetalCards(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/commerce/metal-cards', async (req, res) => {
     try {
       await microserviceService.saveMetalCards(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -282,16 +305,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getPricing(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/commerce/pricing', async (req, res) => {
     try {
       await microserviceService.savePricing(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -300,16 +325,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getCMS(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/commerce/cms', async (req, res) => {
     try {
       await microserviceService.saveCMS(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -318,16 +345,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getBusiness(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/commerce/business', async (req, res) => {
     try {
       await microserviceService.saveBusiness(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -336,16 +365,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getTestimonials(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/commerce/testimonials', async (req, res) => {
     try {
       await microserviceService.saveTestimonials(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -354,16 +385,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getVault(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/security-tech/vault', async (req, res) => {
     try {
       await microserviceService.saveVault(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -372,16 +405,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getMaintenance(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/security-tech/maintenance', async (req, res) => {
     try {
       await microserviceService.saveMaintenance(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -390,16 +425,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getLedger(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/security-tech/ledger', async (req, res) => {
     try {
       await microserviceService.saveLedger(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -408,16 +445,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getChannelSync(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/commerce/channel-sync', async (req, res) => {
     try {
       await microserviceService.saveChannelSync(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -426,16 +465,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getPredictive(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/security-tech/predictive', async (req, res) => {
     try {
       await microserviceService.savePredictive(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -444,16 +485,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getCyber(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/security-tech/cyber', async (req, res) => {
     try {
       await microserviceService.saveCyber(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -462,16 +505,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getEnergy(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/security-tech/energy', async (req, res) => {
     try {
       await microserviceService.saveEnergy(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -480,16 +525,18 @@ const PORT = process.env.PORT || 3000;
     try {
       const data = await microserviceService.getEmergency(req.user?.tenantId || 'default');
       res.json(data);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
   app.post('/api/security-tech/emergency', async (req, res) => {
     try {
       await microserviceService.saveEmergency(req.user?.tenantId || 'default', req.body);
       res.json({ success: true });
-    } catch (err: any) {
-      res.status(500).json({ error: err.message });
+    } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: errorMessage });
     }
   });
 

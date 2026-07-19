@@ -7,7 +7,7 @@ import { logger } from '../utils/logger';
 
 interface WSMessage {
   type: string;
-  data: any;
+  data: Record<string, unknown> | null;
   hotelId?: string;
   timestamp?: number;
 }
@@ -23,7 +23,7 @@ const clients = new Set<AuthenticatedSocket>();
 /**
  * Initializes and starts the WebSockets Command Server
  */
-export const initWebSocket = (server: any): WebSocketServer => {
+export const initWebSocket = (server: import('http').Server): WebSocketServer => {
   wss = new WebSocketServer({ server, path: '/ws' });
 
   wss.on('connection', (ws: AuthenticatedSocket, req: IncomingMessage) => {
@@ -45,7 +45,7 @@ export const initWebSocket = (server: any): WebSocketServer => {
         userId: decodedPayload.userId,
         // Map MANAGER role to HOTEL corresponding scope and OPERATOR to client if needed
         role: decodedPayload.role === 'MANAGER' ? 'HOTEL' : 'CLIENT',
-        hotelId: (decodedPayload as any).hotelId || 'default-hotel'
+        hotelId: (decodedPayload as Record<string, unknown>).hotelId as string || 'default-hotel'
       };
 
       ws.userContext = userContext;
@@ -93,8 +93,9 @@ export const initWebSocket = (server: any): WebSocketServer => {
         logger.error({ err: err.message }, 'WS: Connection crashed with error');
         clients.delete(ws);
       });
-    } catch (err: any) {
-      logger.error({ err: err.message }, 'WS: Auth failed');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      logger.error({ err: message }, 'WS: Auth failed');
       ws.close(4002, 'Auth signature verification failed');
     }
   });
@@ -117,7 +118,7 @@ export const initWebSocket = (server: any): WebSocketServer => {
   return wss;
 };
 
-function handleClientMessage(ws: AuthenticatedSocket, msg: any): void {
+function handleClientMessage(ws: AuthenticatedSocket, msg: Record<string, unknown>): void {
   if (msg.type === 'PING') {
     ws.send(JSON.stringify({ type: 'PONG', timestamp: Date.now() }));
   }

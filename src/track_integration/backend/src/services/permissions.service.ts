@@ -21,7 +21,7 @@ export interface UserContext {
 
 export const defineAbilityFor = (ctx: UserContext) => {
   return {
-    can: (action: Action, subject: Subject, conditions?: any) => {
+    can: (action: Action, subject: Subject, conditions?: Record<string, unknown>) => {
       return PermissionsService.can(ctx, action, subject, conditions);
     }
   };
@@ -31,7 +31,7 @@ export class PermissionsService {
   /**
    * Evaluates if a given user capability action can occur on the specified model
    */
-  static can(ctx: UserContext, action: Action, subject: Subject, conditions?: any): boolean {
+  static can(ctx: UserContext, action: Action, subject: Subject, conditions?: Record<string, unknown>): boolean {
     if (ctx.role === 'SUPER_ADMIN') {
       return true;
     }
@@ -77,7 +77,7 @@ export class PermissionsService {
   /**
    * Generates automatic Prisma search filters for active multi-tenant queries
    */
-  static getPrismaFilter(ctx: UserContext, subject: Subject): any {
+  static getPrismaFilter(ctx: UserContext, subject: Subject): Record<string, unknown> {
     if (ctx.role === 'SUPER_ADMIN') {
       return {};
     }
@@ -99,7 +99,7 @@ export class PermissionsService {
   /**
    * Hard requirement gate that throws a standard security signature violation error if failed
    */
-  static require(ctx: UserContext, action: Action, subject: Subject, conditions?: any): void {
+  static require(ctx: UserContext, action: Action, subject: Subject, conditions?: Record<string, unknown>): void {
     if (!this.can(ctx, action, subject, conditions)) {
       throw new Error(`Forbidden: Access denied for ${action} on ${subject}`);
     }

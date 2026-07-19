@@ -21,8 +21,9 @@ export class AuditController {
       });
 
       res.json(logs);
-    } catch (e: any) {
-      res.status(500).json({ error: e.message });
+    } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : String(e);
+      res.status(500).json({ error: errorMessage });
     }
   }
 
@@ -55,8 +56,9 @@ export class AuditController {
       res.setHeader('Content-Type', 'text/csv');
       res.setHeader('Content-Disposition', `attachment; filename="audit_export_${format(new Date(), 'yyyyMMdd_HHmmss')}.csv"`);
       res.send(csvContent);
-    } catch (e: any) {
-      res.status(500).json({ error: e.message });
+    } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : String(e);
+      res.status(500).json({ error: errorMessage });
     }
   }
 
@@ -65,8 +67,9 @@ export class AuditController {
       // In a real scenario, restrict this to Super Admins only
       const result = await auditService.verifyChain();
       res.json(result);
-    } catch (e: any) {
-      res.status(500).json({ error: e.message });
+    } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : String(e);
+      res.status(500).json({ error: errorMessage });
     }
   }
 }
