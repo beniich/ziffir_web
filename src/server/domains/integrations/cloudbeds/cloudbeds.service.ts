@@ -44,14 +44,16 @@ export class CloudbedsIntegrationService {
     
     const guestName = `${reservation.guestFirstName} ${reservation.guestLastName}`;
     
-    await prisma.arrival.upsert({
-      where: { 
-        hotelId_externalRef: { 
-          hotelId, 
-          externalRef: reservation.reservationID 
-        } 
-      },
-      create: {
+    const existing = await prisma.arrival.findFirst({ where: { hotelId, externalRef: reservation.reservationID } });
+    if (existing) {
+      await prisma.arrival.update({ where: { id: existing.id }, data: {
+        guestName,
+        scheduledArrivalAt: new Date(reservation.checkInDate),
+        scheduledDepartureAt: new Date(reservation.checkOutDate),
+        status: this.mapStatus(reservation.status),
+      } });
+    } else {
+      await prisma.arrival.create({ data: {
         hotelId,
         externalRef: reservation.reservationID,
         guestName,
@@ -62,14 +64,9 @@ export class CloudbedsIntegrationService {
         roomId: reservation.assignedUnitID,
         status: this.mapStatus(reservation.status),
         createdById: 'system',
-      },
-      update: {
-        guestName,
-        scheduledArrivalAt: new Date(reservation.checkInDate),
-        scheduledDepartureAt: new Date(reservation.checkOutDate),
-        status: this.mapStatus(reservation.status),
-      },
-    });
+        transportMode: 'WALK_IN',
+      } });
+    }
   }
   
   private mapStatus(cb: string): any {
@@ -85,7 +82,7 @@ export class CloudbedsIntegrationService {
   
   private async getHotelIdFromCloudbedsProperty(propertyID: string): Promise<string> {
     const hotel = await prisma.hotel.findFirst({
-      where: { cloudbedsPropertyId: propertyID },
+      where: { slug: propertyID },
     });
     if (!hotel) throw new Error(`No hotel for Cloudbeds property ${propertyID}`);
     return hotel.id;

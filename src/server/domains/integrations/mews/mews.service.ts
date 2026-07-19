@@ -93,7 +93,7 @@ export class MewsIntegrationService {
               scheduledArrivalAt: new Date(m.ArrivalUtc),
               scheduledDepartureAt: new Date(m.DepartureUtc),
               roomId: m.AssignedResourceId, // Mews resource = room
-              transportMode: 'WALKING', // À raffiner
+              transportMode: 'WALK_IN', // À raffiner
               status: 'SCHEDULED',
               createdById: 'system',
             },
@@ -144,13 +144,13 @@ export class MewsIntegrationService {
     );
   }
   
-  private mapVipLevel(classifications: any[]): 'CLASSIC' | 'PREFERRED' | 'VIP' | 'PRESTIGE' | 'ROYAL' {
+  private mapVipLevel(classifications: any[]): 'CLASSIC' | 'SILVER' | 'GOLD' | 'AMBASSADOR' | 'DIAMOND' {
     // Mews loyalty classification mapping
     if (!classifications) return 'CLASSIC';
-    if (classifications.includes('Royal')) return 'ROYAL';
-    if (classifications.includes('Prestige')) return 'PRESTIGE';
-    if (classifications.includes('VIP')) return 'VIP';
-    if (classifications.includes('Preferred')) return 'PREFERRED';
+    if (classifications.includes('Royal')) return 'DIAMOND';
+    if (classifications.includes('Prestige')) return 'AMBASSADOR';
+    if (classifications.includes('GOLD')) return 'GOLD';
+    if (classifications.includes('Preferred')) return 'SILVER';
     return 'CLASSIC';
   }
 }

@@ -86,7 +86,7 @@ router.post('/login', async (req, res) => {
     if (errorMessage === '2FA_REQUIRED') {
       return res.json({ success: true, data: { requiresTotp: true } });
     }
-    res.status(401).json({ success: false, error: { message: e.message } });
+    res.status(401).json({ success: false, error: { message: errorMessage } });
   }
 });
 
@@ -109,14 +109,14 @@ router.post('/refresh', async (req, res) => {
 });
 
 // POST /api/auth/logout
-router.post('/logout', requireAuth, async (req: import("express").Request, res) => {
+router.post('/logout', requireAuth, async (req: any, res) => {
   await authService.logout(req.auth.sessionId);
   authService.clearAuthCookies(res);
   res.json({ success: true });
 });
 
 // GET /api/auth/me
-router.get('/me', requireAuth, async (req: import("express").Request, res) => {
+router.get('/me', requireAuth, async (req: any, res) => {
   const auth = await authService.buildAuthResult(
     req.auth.sub,
     req.auth.sessionId,
@@ -126,11 +126,11 @@ router.get('/me', requireAuth, async (req: import("express").Request, res) => {
 });
 
 // POST /api/auth/team/hotels/:hotelId/switch
-router.post('/team/hotels/:hotelId/switch', requireAuth, async (req: import("express").Request, res) => {
+router.post('/team/hotels/:hotelId/switch', requireAuth, async (req: any, res) => {
   try {
     const { accessToken } = await authService.switchHotel(
       req.auth.sub,
-      req.params.hotelId,
+      (req.params.hotelId as string),
       req.auth.sessionId
     );
     
@@ -145,7 +145,7 @@ router.post('/team/hotels/:hotelId/switch', requireAuth, async (req: import("exp
     const auth = await authService.buildAuthResult(
       req.auth.sub,
       req.auth.sessionId,
-      req.params.hotelId
+      (req.params.hotelId as string)
     );
     
     res.json({ success: true, data: auth });
@@ -166,7 +166,7 @@ const inviteSchema = z.object({
   message: z.string().optional(),
 });
 
-router.post('/team/invitations', requireAuth, async (req: import("express").Request, res) => {
+router.post('/team/invitations', requireAuth, async (req: any, res) => {
   const parsed = inviteSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ success: false, error: { message: 'Données invalides' } });

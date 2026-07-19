@@ -3,7 +3,7 @@ import { adminAuth } from '../lib/firebase-admin.ts';
 import { DecodedIdToken } from 'firebase-admin/auth';
 
 export interface AuthRequest extends Request {
-  user?: DecodedIdToken;
+  user?: any;
 }
 
 export const requireAuth = async (

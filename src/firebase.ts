@@ -110,7 +110,7 @@ export const logout = async () => {
   cachedAccessToken = null;
 };
 
-export const getOrCreateUserProfile = async (user: User): Promise<Record<string, unknown>> => {
+export const getOrCreateUserProfile = async (user: User): Promise<any> => {
   try {
     const userDocRef = doc(db, 'users', user.uid);
     const userSnap = await getDoc(userDocRef);
@@ -120,7 +120,7 @@ export const getOrCreateUserProfile = async (user: User): Promise<Record<string,
 
     // Try finding by email across all users in case of pre-seeded users
     const querySnap = await getDocs(collection(db, 'users'));
-    let foundUser: Record<string, unknown> | null = null;
+    let foundUser: any = null;
     querySnap.forEach(d => {
       const data = d.data();
       if (data.email && data.email.toLowerCase() === user.email?.toLowerCase()) {
