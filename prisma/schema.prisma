@@ -104,6 +104,12 @@ model User {
   arrivalStatusEvents ArrivalStatusEvent[]
   taskEvents          TaskEvent[]
 
+  // Jetons & Billing
+  tokens        Int      @default(1000)
+
+  // Relations Zero Trust
+  accessPolicies AccessPolicy[]
+
   @@index([email])
   @@index([role, isActive])
 }
@@ -807,4 +813,168 @@ model NewsletterSubscriber {
 
   @@index([email])
   @@index([confirmationToken])
+}
+
+// ============================================================================
+// ZERO TRUST & MANAGE / BILLING (Sprint 1)
+// ============================================================================
+
+model AccessPolicy {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resourceId  String
+  action      String   @default("*")
+  allowed     Boolean  @default(true)
+  tenantId    String?
+  conditions  String?  // JSON format
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, resourceId, action])
+  @@index([userId, resourceId])
+  @@index([tenantId])
+}
+
+// ============================================================================
+// INFRASTRUCTURE (CAFM) & STORAGE (Sprint 2)
+// ============================================================================
+
+model Asset {
+  id          String      @id @default(cuid())
+  name        String
+  type        String      // SERVER, HVAC, CHILLER, UPS, PDU, GENERATOR, SENSOR
+  location    String?
+  status      String      @default("OPERATIONAL") // OPERATIONAL, WARNING, CRITICAL, MAINTENANCE
+  hotelId     String?
+  tenantId    String?
+  telemetries Telemetry[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([type])
+  @@index([status])
+  @@index([hotelId])
+  @@index([tenantId])
+}
+
+model Telemetry {
+  id          String   @id @default(cuid())
+  assetId     String
+  asset       Asset    @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  temperature Float    // Celsius
+  vibration   Float    // mm/s or g
+  humidity    Float?   // %
+  powerUsage  Float?   // kW or W
+  timestamp   DateTime @default(now())
+
+  @@index([assetId, timestamp])
+  @@index([timestamp])
+}
+
+model FileMetadata {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  fileName    String
+  mimeType    String
+  sizeBytes   BigInt?
+  bucket      String
+  publicUrl   String?
+  uploaderId  String?
+  tenantId    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([uploaderId])
+  @@index([tenantId])
+  @@index([bucket])
+}
+
+// ============================================================================
+// SPRINT 3: TRAFFIC, EDGE & SECURITY
+// ============================================================================
+
+model TrafficLog {
+  id               String   @id @default(cuid())
+  tenantId         String
+  nodeId           String
+  bytesTransferred BigInt   @default(0)
+  latency          Float    // ms
+  protocol         String   @default("HTTPS") // HTTP, HTTPS, GRPC, WSS
+  sourceIp         String?
+  timestamp        DateTime @default(now())
+
+  @@index([tenantId, timestamp])
+  @@index([nodeId])
+}
+
+model WafEvent {
+  id        String   @id @default(cuid())
+  tenantId  String
+  type      String   // SQLI, XSS, RATE_LIMIT, GEO_BLOCK, BOT
+  severity  String   @default("MEDIUM") // LOW, MEDIUM, HIGH, CRITICAL
+  sourceIp  String
+  targetPath String
+  blocked   Boolean  @default(true)
+  details   String?
+  timestamp DateTime @default(now())
+
+  @@index([tenantId, timestamp])
+  @@index([type])
+  @@index([sourceIp])
+}
+
+model DnsRecord {
+  id        String   @id @default(cuid())
+  tenantId  String
+  name      String   // subdomain or domain (e.g. api.example.com)
+  type      String   // A, AAAA, CNAME, TXT, MX
+  value     String   // IP or target hostname
+  ttl       Int      @default(300)
+  proxied   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, name, type])
+  @@index([tenantId])
+}
+
+// ============================================================================
+// SPRINT 4: COMPUTE & AI
+// ============================================================================
+
+model AiAnalysis {
+  id           String   @id @default(cuid())
+  tenantId     String
+  type         String   // LOG_ANALYSIS, ANOMALY_DETECTION, CAPACITY_FORECAST, SECURITY_REPORT
+  status       String   @default("PENDING") // PENDING, RUNNING, DONE, FAILED
+  inputSummary String?  // résumé des données envoyées à Gemini
+  result       String?  // réponse JSON stringifiée de Gemini
+  model        String   @default("gemini-1.5-flash")
+  promptTokens Int?
+  outputTokens Int?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([tenantId, type])
+  @@index([status])
+  @@index([tenantId, createdAt])
+}
+
+model ComputeJob {
+  id         String   @id @default(cuid())
+  tenantId   String
+  name       String
+  type       String   // BATCH, CRON, SERVERLESS
+  status     String   @default("QUEUED") // QUEUED, RUNNING, DONE, FAILED, CANCELLED
+  payload    String?  // paramètres JSON
+  output     String?  // résultat JSON
+  errorMsg   String?
+  startedAt  DateTime?
+  finishedAt DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([tenantId, status])
+  @@index([tenantId, type])
 }

@@ -19,6 +19,14 @@ import auditRoutes from './src/server/domains/audit/audit.routes.js';
 import teamRoutes from './src/server/routes/team.routes.js';
 import bookingRoutes from './src/server/routes/booking.routes.js';
 import newsletterRoutes from './src/server/routes/newsletter.routes.js';
+import zeroTrustRoutes from './src/server/routes/zeroTrust.routes.js';
+import billingRoutes from './src/server/routes/billing.routes.js';
+import infrastructureRoutes from './src/server/routes/infrastructure.routes.js';
+import storageRoutes from './src/server/routes/storage.routes.js';
+import trafficRoutes from './src/server/routes/traffic.routes.js';
+import securityRoutes from './src/server/routes/security.routes.js';
+import aiRoutes from './src/server/routes/ai.routes.js';
+import computeRoutes from './src/server/routes/compute.routes.js';
 import cors from 'cors';
 import { config } from './src/server/config.js';
 import { auditMiddleware } from './src/server/middlewares/audit.middleware.js';
@@ -60,6 +68,22 @@ const PORT = process.env.PORT || 3000;
 
   // --- ARRIVALS VIP (Semaine 3) ---
   app.use('/api/arrivals', arrivalsRoutes);
+
+  // --- SPRINT 1 : ZERO TRUST & BILLING (Cloud & CAFM Platform) ---
+  app.use('/api/zero-trust', zeroTrustRoutes);
+  app.use('/api/billing', billingRoutes);
+
+  // --- SPRINT 2 : INFRASTRUCTURE (CAFM) & STORAGE ---
+  app.use('/api/infrastructure', infrastructureRoutes);
+  app.use('/api/storage', storageRoutes);
+
+  // --- SPRINT 3 : TRAFFIC, EDGE & SECURITY ---
+  app.use('/api/traffic', trafficRoutes);
+  app.use('/api/security', securityRoutes);
+
+  // --- SPRINT 4 : COMPUTE & AI ---
+  app.use('/api/ai', aiRoutes);
+  app.use('/api/compute', computeRoutes);
 
   // ==========================================================================
   // API ROUTES FOR ZAPHIR 23 MICROSERVICES (FIRESTORE)

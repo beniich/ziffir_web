@@ -1,3 +1,12 @@
+jest.mock('otplib', () => ({
+  authenticator: {
+    generateSecret: jest.fn().mockReturnValue('KVKFKRCPNZQUYMLXOVYDSQKJKZDTSRLD'),
+    keyuri: jest.fn().mockReturnValue('otpauth://totp/Ziffir:test?secret=KVKFKRCPNZQUYMLXOVYDSQKJKZDTSRLD&issuer=Ziffir'),
+    verify: jest.fn().mockReturnValue(true),
+    generate: jest.fn().mockReturnValue('123456')
+  }
+}));
+
 import { authService } from '../domains/auth/auth.service';
 import { prisma } from '../lib/prisma';
 

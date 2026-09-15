@@ -1,9 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const { authenticator } = require('otplib');
+import { verifySync } from 'otplib';
 import { UserRole, HotelRole, Plan, SubscriptionStatus } from '@prisma/client';
 import { prisma } from '../../lib/prisma';
 import { emailService } from '../../lib/email';
@@ -217,7 +215,7 @@ class AuthService {
     if (user.totpEnabled) {
       if (!input.totpCode) throw new Error('2FA_REQUIRED');
       if (!user.totpSecret) throw new Error('Configuration 2FA invalide');
-      const totpValid = authenticator.verify({ token: input.totpCode, secret: user.totpSecret });
+      const totpValid = verifySync({ token: input.totpCode, secret: user.totpSecret }).valid;
       if (!totpValid) throw new Error('Code 2FA invalide');
     }
     
