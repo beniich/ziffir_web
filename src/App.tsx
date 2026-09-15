@@ -1343,8 +1343,8 @@ export default function App() {
         </>
       ) : (
         <>
-          <div className="fixed inset-0 bg-gradient-to-tr from-[#ede4d2]/35 via-[#faf8f4]/60 to-[#ffffff]/90 pointer-events-none z-0" />
-          <div className="fixed inset-0 bg-[radial-gradient(#c19a6b_1px,transparent_1px)] [background-size:16px_16px] opacity-15 pointer-events-none z-0" />
+          <div className="fixed inset-0 bg-gradient-to-br from-[#ffffff] via-[#faf7f2] to-[#f4eee4] pointer-events-none z-0" />
+          <div className="fixed inset-0 bg-[radial-gradient(#c19a6b_1px,transparent_1px)] [background-size:20px_20px] opacity-10 pointer-events-none z-0" />
         </>
       )}
 
@@ -1554,12 +1554,12 @@ export default function App() {
         </div>
       </header>
 
-      {/* CORE WORKSPACE GRID */}
-      <div className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-8 flex flex-col lg:flex-row gap-6 lg:gap-8 relative z-10">
+      {/* CORE WORKSPACE GRID - MARGES ENTRE RUBRIQUES SUPPRIMÉES / FLUIDE */}
+      <div className="flex-1 w-full max-w-[1720px] mx-auto px-2 sm:px-4 py-2 sm:py-3 flex flex-col lg:flex-row gap-2 lg:gap-3 relative z-10">
         
         {/* SIDE BAR NAVIGATION - TRANSPARENT FROSTED GLASS */}
         {!sidebarCollapsed && (
-          <aside className="w-full lg:w-64 flex flex-row lg:flex-col gap-1.5 shrink-0 overflow-x-auto pb-2 lg:pb-0 scrollbar-none glass-panel p-2.5 sm:p-4 h-fit sticky top-[62px] lg:top-24 z-30 shadow-md animate-fade-in">
+          <aside className="w-full lg:w-60 flex flex-row lg:flex-col gap-1 shrink-0 overflow-x-auto pb-1 lg:pb-0 scrollbar-none glass-panel p-2 sm:p-2.5 h-fit sticky top-[62px] lg:top-20 z-30 shadow-sm animate-fade-in">
           
           <button
             onClick={() => {
@@ -1823,8 +1823,8 @@ export default function App() {
         </aside>
         )}
 
-        {/* WORKSPACE PREVIEW GLASS STAGE CONTENT */}
-        <main className="flex-1 flex flex-col gap-6 animate-fade-in" id="workspace-stage">
+        {/* WORKSPACE PREVIEW GLASS STAGE CONTENT - MARGES MINIMALES */}
+        <main className="flex-1 flex flex-col gap-2 animate-fade-in" id="workspace-stage">
           {!TAB_CLEARANCE[activeTab]?.includes(sessionRole) ? (
             renderSessionRoleLockScreen(activeTab)
           ) : (

@@ -189,21 +189,21 @@ export default function SettingsPage({
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-300 relative text-slate-100">
+    <div className="space-y-4 animate-in fade-in duration-300 relative text-slate-800 dark:text-slate-100">
       {toastMessage && (
-        <div className="fixed top-6 right-6 z-50 p-4 rounded-2xl shadow-2xl border bg-stone-900 border-amber-500/30 text-white flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-300">
-          <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+        <div className="fixed top-6 right-6 z-50 p-4 rounded-2xl shadow-2xl border bg-white dark:bg-stone-900 border-amber-500/30 text-stone-900 dark:text-white flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-300">
+          <CheckCircle2 className="w-5 h-5 text-emerald-500" />
           <span className="text-xs font-semibold">{toastMessage}</span>
         </div>
       )}
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-white/10 pb-4 gap-3">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-[#c19a6b]/20 dark:border-white/10 pb-3 gap-2">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight font-serif-luxury text-slate-100">
+          <h1 className="text-2xl font-bold tracking-tight font-serif-luxury text-[#7c5a30] dark:text-slate-100">
             Organisation & Infrastructure Governance
           </h1>
-          <p className="text-xs text-slate-400 mt-1 font-mono">
+          <p className="text-xs text-stone-500 dark:text-slate-400 mt-0.5 font-mono">
             zaphir.cloudindustrie.com / Subscriptions, PayPal Billing & Granular RBAC Permissions
           </p>
         </div>

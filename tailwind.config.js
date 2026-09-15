@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -7,6 +8,15 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Remplacement du gris terne par des tons chauds, crème, ivoire et or
+        light: {
+          bg: '#fcfaf6',
+          card: '#ffffff',
+          surface: '#f6f1e8',
+          border: 'rgba(193, 154, 107, 0.22)',
+          text: '#1e1b18',
+          subtext: '#6e6255',
+        },
         gold: {
           50: '#fdfbf7',
           100: '#faf3e6',
