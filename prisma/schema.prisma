@@ -56,6 +56,7 @@ enum SubscriptionStatus {
 model User {
   id            String   @id @default(cuid())
   email         String   @unique
+  googleId      String?  @unique
   passwordHash  String   @default("")
   name          String?
   displayName   String?
@@ -144,6 +145,7 @@ model Hotel {
   trialEndsAt         DateTime?
   subscriptionId      String?            @unique
   stripeCustomerId    String?            @unique
+  paypalSubscriptionId String?           @unique
   subscriptionStatus  SubscriptionStatus @default(TRIALING)
   currentPeriodEnd    DateTime?
   cancelAtPeriodEnd   Boolean            @default(false)

@@ -27,6 +27,7 @@ import trafficRoutes from './src/server/routes/traffic.routes.js';
 import securityRoutes from './src/server/routes/security.routes.js';
 import aiRoutes from './src/server/routes/ai.routes.js';
 import computeRoutes from './src/server/routes/compute.routes.js';
+import paypalRoutes from './src/server/routes/paypal.routes.js';
 import cors from 'cors';
 import { config } from './src/server/config.js';
 import { auditMiddleware } from './src/server/middlewares/audit.middleware.js';
@@ -47,6 +48,7 @@ const PORT = process.env.PORT || 3000;
   app.use('/api/team', teamRoutes);
   app.use('/api/booking', bookingRoutes); // Public (BookingWidget)
   app.use('/api/newsletter', newsletterRoutes); // Public
+  app.use('/api/payments/paypal', paypalRoutes); // Public Webhook (PayPal signature validation)
 
   // --- ZAPHIR SECURITY ENVELOPE ---
   // Ensure all API endpoints below are authenticated and tracked
