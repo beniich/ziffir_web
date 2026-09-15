@@ -14,9 +14,12 @@ import {
   Eye, 
   HelpCircle,
   Save,
-  Mail
+  Mail,
+  Shield,
+  Layers
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import SettingsPage from './SettingsPage';
 import { 
   initAuth, 
   googleSignIn, 
@@ -220,6 +223,9 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
   const [connectionStatus, setConnectionStatus] = useState<'unknown' | 'verifying' | 'success' | 'failed'>('unknown');
   const [connectionMessage, setConnectionMessage] = useState<string | null>(null);
   const [syncLoading, setSyncLoading] = useState<string | null>(null);
+
+  // Settings Sub-tab: 'sheets' or 'enterprise-governance'
+  const [activeSubTab, setActiveSubTab] = useState<'enterprise-governance' | 'sheets'>('enterprise-governance');
 
   // Load existing parameters from Firestore on mount
   useEffect(() => {
@@ -616,6 +622,40 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
         </div>
       </div>
 
+      {/* Navigation Sub-Tabs */}
+      <div className="flex gap-2 border-b border-white/10 pb-px">
+        <button
+          onClick={() => setActiveSubTab('enterprise-governance')}
+          className={`px-4 py-2.5 rounded-t-2xl text-xs font-bold transition-all flex items-center gap-2 ${
+            activeSubTab === 'enterprise-governance'
+              ? 'bg-stone-900 border-t-2 border-amber-500 text-amber-400 border-x border-white/10'
+              : 'text-slate-400 hover:text-white hover:bg-white/5'
+          }`}
+        >
+          <Shield className="w-4 h-4 text-amber-400" />
+          Abonnements, Équipes & Matrice RBAC
+        </button>
+
+        <button
+          onClick={() => setActiveSubTab('sheets')}
+          className={`px-4 py-2.5 rounded-t-2xl text-xs font-bold transition-all flex items-center gap-2 ${
+            activeSubTab === 'sheets'
+              ? 'bg-stone-900 border-t-2 border-amber-500 text-amber-400 border-x border-white/10'
+              : 'text-slate-400 hover:text-white hover:bg-white/5'
+          }`}
+        >
+          <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+          Synchronisation Google Sheets & Clés
+        </button>
+      </div>
+
+      {activeSubTab === 'enterprise-governance' ? (
+        <SettingsPage
+          language={language}
+          addAuditLog={addAuditLog}
+        />
+      ) : (
+      <>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         {/* LEFT COMPILER: GOOGLE AUTHORIZATION CREDENTIALS */}
@@ -1027,6 +1067,8 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
           </div>
         )}
       </div>
+      </>
+      )}
 
     </div>
   );
