@@ -50,6 +50,8 @@ async function main() {
     data: {
       id: 'hotel-dev',
       name: 'Zaphir Palace Paris',
+      slug: 'zaphir-palace-paris',
+      ownerId: admin.id,
     },
   });
 
@@ -87,10 +89,10 @@ async function main() {
 
   // 6. Menu Room Service (Semaine 2)
   const menuItems = [
-    { name: 'Club Sandwich Zaphir', description: 'Poulet rôti, bacon croustillant', priceCents: 2800, category: 'FOOD', image: 'club.jpg' },
-    { name: 'Salade César', description: 'Vraie romaine, parmesan 24 mois', priceCents: 2400, category: 'FOOD', image: 'cesar.jpg' },
-    { name: 'Champagne Ruinart BdB', description: 'Bouteille 75cl', priceCents: 15000, category: 'BEVERAGE', image: 'ruinart.jpg' },
-    { name: 'Eau Minérale Evian', description: 'Bouteille 75cl', priceCents: 800, category: 'BEVERAGE', image: 'evian.jpg' },
+    { name: 'Club Sandwich Zaphir', description: 'Poulet rôti, bacon croustillant', priceCents: 2800, category: 'FOOD', imageUrl: 'club.jpg' },
+    { name: 'Salade César', description: 'Vraie romaine, parmesan 24 mois', priceCents: 2400, category: 'FOOD', imageUrl: 'cesar.jpg' },
+    { name: 'Champagne Ruinart BdB', description: 'Bouteille 75cl', priceCents: 15000, category: 'BEVERAGE', imageUrl: 'ruinart.jpg' },
+    { name: 'Eau Minérale Evian', description: 'Bouteille 75cl', priceCents: 800, category: 'BEVERAGE', imageUrl: 'evian.jpg' },
   ];
 
   for (const item of menuItems) {
@@ -103,7 +105,7 @@ async function main() {
   await prisma.aiRule.create({
     data: {
       hotelId: hotel.id,
-      name: 'Synergie VIP Arrival',
+      module: 'SUITE_CONTROLS',
       trigger: '{"event":"logistics:driver_status","conditions":{"status":"APPROACHING_HOTEL"}}',
       action: '{"service":"suite-controls","action":"setScene","params":{"scene":"WELCOME"}}',
       isActive: true,
@@ -126,14 +128,14 @@ async function main() {
   const laterToday = new Date();
   laterToday.setHours(laterToday.getHours() + 3);
 
-  // VIP #1 - Atterrit bientôt
+  // VIP #1 - En route
   const arr1 = await prisma.arrival.create({
     data: {
       hotelId: hotel.id,
       guestName: 'Elon M.',
-      vipLevel: 'ROYAL',
-      status: 'LANDED',
-      transportMode: 'PRIVATE_JET',
+      vipLevel: 'DIAMOND',
+      status: 'EN_ROUTE',
+      transportMode: 'FLIGHT',
       flightNumber: 'N1000',
       flightOrigin: 'SFO',
       scheduledArrivalAt: laterToday,
@@ -150,9 +152,9 @@ async function main() {
     data: {
       hotelId: hotel.id,
       guestName: 'Isabelle A.',
-      vipLevel: 'PRESTIGE',
+      vipLevel: 'AMBASSADOR',
       status: 'CONFIRMED',
-      transportMode: 'CAR',
+      transportMode: 'PRIVATE_CAR',
       scheduledArrivalAt: tomorrow,
       suiteReadyBy: new Date(tomorrow.getTime() - 60 * 60_000),
       roomId: rooms[9].id, // Autre suite
@@ -168,19 +170,19 @@ async function main() {
     await prisma.arrivalTask.createMany({
       data: [
         { arrivalId, hotelId: hotel.id, team: 'HOUSEKEEPING', title: 'Inspection suite finale', dueAt: new Date(time.getTime() - 30 * 60000), isCritical: true, priority: 1, status: 'PENDING' },
-        { arrivalId, hotelId: hotel.id, team: 'KITCHEN', title: 'Welcome drink', dueAt: new Date(time.getTime() - 45 * 60000), isCritical: false, priority: 1, status: 'COMPLETED' },
+        { arrivalId, hotelId: hotel.id, team: 'RESTAURANT', title: 'Welcome drink', dueAt: new Date(time.getTime() - 45 * 60000), isCritical: false, priority: 1, status: 'COMPLETED' },
         { arrivalId, hotelId: hotel.id, team: 'RECEPTION', title: 'Pré-check-in', dueAt: new Date(time.getTime() - 60 * 60000), isCritical: false, priority: 1, status: 'PENDING' },
       ]
     });
-    if (vipLevel === 'ROYAL') {
+    if (vipLevel === 'DIAMOND') {
       await prisma.arrivalTask.create({
         data: { arrivalId, hotelId: hotel.id, team: 'SECURITY', title: 'Sécuriser périmètre', dueAt: new Date(time.getTime() - 60 * 60000), isCritical: true, priority: 2, status: 'IN_PROGRESS' }
       });
     }
   };
 
-  await generateTasks(arr1.id, 'ROYAL', laterToday);
-  await generateTasks(arr2.id, 'PRESTIGE', tomorrow);
+  await generateTasks(arr1.id, 'DIAMOND', laterToday);
+  await generateTasks(arr2.id, 'AMBASSADOR', tomorrow);
 
   console.log('✅ Base de données initialisée avec succès !');
 }

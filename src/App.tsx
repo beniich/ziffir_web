@@ -56,6 +56,7 @@ import { UserManagerSuite } from './components/UserManagerSuite';
 import { WineCellarTab } from './components/WineCellarTab';
 import { MarketingWebsite } from './components/MarketingWebsite';
 import { SaaSCheckoutWall } from './components/SaaSCheckoutWall';
+import { api } from './lib/api.service';
 
 // Cryptographic Simulation Utilities for dynamic chain audit logging
 export interface AuditEntry {
@@ -350,6 +351,12 @@ export default function App() {
         if (user) {
           setStudentName(user.displayName || user.email || 'Elena Petrova');
           try {
+            // Synchronize Firebase session with Backend Prisma / JWT cookies
+            const idToken = await user.getIdToken();
+            await api.post('/auth/google', { idToken }).catch((apiErr) => {
+              console.warn('Backend Google Auth session exchange error:', apiErr);
+            });
+
             const profile = await getOrCreateUserProfile(user);
             if (profile) {
               setSessionRole(profile.role);
@@ -490,11 +497,47 @@ export default function App() {
     { id: 'GST-102', name: 'Ms. Al-Fayed', vip: 'VIP PLATINUM', status: 'Landed', info: 'Arrived at Terminal 4 / Chauffeur en route', flight: 'Flight Emirates EM5 / DXB-JFK', serviceLevel: 'ROYAL', totalSpend: 28500, checkInDate: '2026-06-19' },
     { id: 'GST-103', name: 'Dr. Rossi', vip: 'VIP BRONZE', status: 'In-flight', info: 'Estimated arrival 2h 15m', flight: 'Flight AF112 / CDG-JFK', serviceLevel: 'EXECUTIVE', totalSpend: 7900, checkInDate: '2026-06-20' }
   ]);
-  const flights = [
+  const [flights, setFlights] = useState([
     { id: 'BA245', status: 'On Time', time: '11:15 AM' },
     { id: 'AF112', status: 'Delayed 15m', time: '12:45 PM' },
     { id: 'EM5', status: 'Landed', time: '09:50 AM' }
-  ];
+  ]);
+
+  // Load real arrivals from DB API
+  useEffect(() => {
+    let isMounted = true;
+    api.get<any>('/arrivals')
+      .then((res) => {
+        if (!isMounted || !res?.data || !Array.isArray(res.data) || res.data.length === 0) return;
+        const mappedGuests = res.data.map((arr: any) => ({
+          id: arr.id,
+          name: arr.guestName || 'VIP Guest',
+          vip: `VIP ${arr.vipLevel || 'GOLD'}`,
+          status: arr.status === 'EN_ROUTE' ? 'En route animate-pulse' : arr.status === 'LANDED' ? 'Landed' : arr.status || 'Confirmed',
+          info: arr.welcomeAmenity || (arr.room ? `Room ${arr.room.number}` : 'VIP Suite Assigned'),
+          flight: arr.flightNumber ? `Flight ${arr.flightNumber} / ${arr.flightOrigin || 'Arrival'}` : 'Private Chauffeur',
+          serviceLevel: arr.vipLevel || 'VIP',
+          totalSpend: arr.estimatedRevenueCents ? arr.estimatedRevenueCents / 100 : 15000,
+          checkInDate: arr.scheduledArrivalAt ? new Date(arr.scheduledArrivalAt).toISOString().split('T')[0] : '2026-06-18',
+        }));
+        setVipGuests(mappedGuests);
+
+        const mappedFlights = res.data
+          .filter((arr: any) => arr.flightNumber)
+          .map((arr: any) => ({
+            id: arr.flightNumber,
+            status: arr.status === 'EN_ROUTE' ? 'On Time' : arr.status === 'LANDED' ? 'Landed' : 'Scheduled',
+            time: arr.scheduledArrivalAt ? new Date(arr.scheduledArrivalAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '12:00 PM',
+          }));
+        if (mappedFlights.length > 0) {
+          setFlights(mappedFlights);
+        }
+      })
+      .catch((err) => {
+        console.warn('Arrivals DB fetch fallback to simulated data:', err);
+      });
+    return () => { isMounted = false; };
+  }, []);
 
   // 2. ROOM SERVICE ORDERS
   const [roomOrders, setRoomOrders] = useState<RoomServiceOrder[]>([
@@ -505,6 +548,60 @@ export default function App() {
     { id: 'order-5', guest: 'Contarah', room: 'Villa 2', details: 'Traditional Premium Angus Beef burger, gold leaf garnish', status: 'Quality Check', imgUrl: '' },
     { id: 'order-6', guest: 'Fonuhery', room: 'Suite 304', details: 'Fettuccine Vongole with fresh Mediterranean clams, Pinot Grigio', status: 'Quality Check', imgUrl: '' }
   ]);
+
+  // Load real room orders from DB API
+  useEffect(() => {
+    let isMounted = true;
+    api.get<any>('/room-orders')
+      .then((res) => {
+        if (!isMounted || !res?.data || !Array.isArray(res.data) || res.data.length === 0) return;
+        const statusMapFromBackend: Record<string, RoomServiceOrder['status']> = {
+          PENDING: 'Preparation',
+          CONFIRMED: 'Preparation',
+          PREPARING: 'Preparation',
+          READY: 'Quality Check',
+          OUT_FOR_DELIVERY: 'Out for Delivery',
+          DELIVERED: 'Delivered',
+        };
+        const mappedOrders: RoomServiceOrder[] = res.data.map((ord: any) => ({
+          id: ord.id,
+          guest: ord.guestName || 'VIP Guest',
+          room: ord.room ? `Suite ${ord.room.number}` : 'Suite 201',
+          details: ord.items?.map((it: any) => `${it.quantity}x ${it.nameSnapshot}`).join(', ') || ord.guestNotes || 'Room Service Order',
+          status: statusMapFromBackend[ord.status] || 'Preparation',
+          imgUrl: '',
+        }));
+        setRoomOrders(mappedOrders);
+      })
+      .catch((err) => {
+        console.warn('Room orders DB fetch fallback to simulated data:', err);
+      });
+    return () => { isMounted = false; };
+  }, []);
+
+  // Fetch real audit logs from DB
+  useEffect(() => {
+    let isMounted = true;
+    api.get<any>('/audit/logs?limit=50')
+      .then((logs) => {
+        if (!isMounted || !Array.isArray(logs) || logs.length === 0) return;
+        const mappedLogs: AuditEntry[] = logs.map((log: any, idx: number) => ({
+          id: log.id || `LOG-${String(idx + 1).padStart(3, '0')}`,
+          timestamp: log.createdAt ? new Date(log.createdAt).toLocaleString('en-US') : new Date().toLocaleString('en-US'),
+          action: log.action || log.eventType || 'SYSTEM_EVENT',
+          role: (log.actorType || 'SYSTEM').toUpperCase(),
+          reason: log.metadata ? (typeof log.metadata === 'string' ? log.metadata : JSON.stringify(log.metadata)) : 'Audit trail entry',
+          previousHash: log.previousHash || '0000000000000000000000000000000000000000',
+          hash: log.hash || computeSimpleHash(log.id || String(idx)),
+          status: 'AUTHORIZED',
+        }));
+        setAuditLogs(mappedLogs);
+      })
+      .catch((err) => {
+        console.warn('Audit logs DB fetch fallback:', err);
+      });
+    return () => { isMounted = false; };
+  }, []);
 
   const advanceOrderStatus = (id: string) => {
     setRoomOrders(prev => prev.map(order => {
