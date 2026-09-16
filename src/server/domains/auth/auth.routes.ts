@@ -226,7 +226,7 @@ router.post('/invitation/:token/accept', async (req, res) => {
   }
 });
 
-// POST /api/auth/google — Échange un Firebase ID Token contre une session JWT Ziffir
+// POST /api/auth/google — Échange un Firebase ID Token contre une session JWT Zaphir
 router.post('/google', async (req, res) => {
   const { idToken } = req.body;
   if (!idToken) {

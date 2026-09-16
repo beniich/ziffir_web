@@ -34,7 +34,7 @@ export const emailService = {
     `;
     
     await transporter.sendMail({
-      from: `"Ziffir" <${process.env.SMTP_FROM}>`,
+      from: `"Zaphir" <${process.env.SMTP_FROM}>`,
       to: params.to,
       subject: `Invitation à rejoindre ${params.hotelName}`,
       html,
@@ -43,7 +43,7 @@ export const emailService = {
   
   async send(params: { to: string; subject: string; html: string }): Promise<void> {
     await transporter.sendMail({
-      from: `"Ziffir" <${process.env.SMTP_FROM}>`,
+      from: `"Zaphir" <${process.env.SMTP_FROM}>`,
       to: params.to,
       subject: params.subject,
       html: params.html,

@@ -322,7 +322,7 @@ export default function App() {
   const [themeMode, setThemeMode] = useState<'dark' | 'light'>('dark');
   const [colorScheme, setColorScheme] = useState<'gold' | 'sapphire' | 'emerald' | 'sunset'>('gold');
   const [currentWallpaper, setCurrentWallpaper] = useState<string>(() => {
-    return localStorage.getItem('zafir_current_wallpaper') || 'https://lh3.googleusercontent.com/aida/AP1WRLuEMj6PXWI0qW0PAm0L_gb9ns8063JRR0X7RssoeAl_9TMxhqwZGbzHDLK0zIhu9RtEuzWfooxSMYvdYpV-ayMuG3tKXEerdRfTT0kSeyatilNGI2EsiAaPmuTpDo44Tj7UFGr1pbZ8VKaThMxP_-J-L0hftaB10OXkTel3bXWrsGdJQWM682Bavn6ZjVXMWhAvADx5aGd6E5hUwINjE-tv-uhYkaw2NPGah4Ixyyfec6HAsd9mJmfavcE';
+    return localStorage.getItem('zaphir_current_wallpaper') || 'https://lh3.googleusercontent.com/aida/AP1WRLuEMj6PXWI0qW0PAm0L_gb9ns8063JRR0X7RssoeAl_9TMxhqwZGbzHDLK0zIhu9RtEuzWfooxSMYvdYpV-ayMuG3tKXEerdRfTT0kSeyatilNGI2EsiAaPmuTpDo44Tj7UFGr1pbZ8VKaThMxP_-J-L0hftaB10OXkTel3bXWrsGdJQWM682Bavn6ZjVXMWhAvADx5aGd6E5hUwINjE-tv-uhYkaw2NPGah4Ixyyfec6HAsd9mJmfavcE';
   });
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
   const [auditLogs, setAuditLogs] = useState<AuditEntry[]>(INITIAL_AUDITS);
@@ -341,7 +341,7 @@ export default function App() {
   const [studentName, setStudentName] = useState<string>('Elena Petrova');
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
   const [hasActiveSubscription, setHasActiveSubscription] = useState<boolean>(() => {
-    return localStorage.getItem('sapphir_has_active_subscription') === 'true';
+    return localStorage.getItem('zaphir_has_active_subscription') === 'true';
   });
 
   useEffect(() => {
@@ -1588,29 +1588,6 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* Demo reset subscription option */}
-                    <div className="border-t border-black/5 pt-2 mb-2">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setProfileDropdownOpen(false);
-                          setHasActiveSubscription(false);
-                          localStorage.removeItem('sapphir_has_active_subscription');
-                          localStorage.setItem('sapphir_current_plan', 'TRIAL');
-                          addAuditLog(
-                            'SUBSCRIPTION_DEMO_RESET',
-                            'Reset subscription state for demo testing purposes. Redirecting back to Payment Gateway Wall.',
-                            'AUTHORIZED'
-                          );
-                          confetti({ particleCount: 20, colors: ['#ffd700', '#c19a6b'] });
-                        }}
-                        className="w-full flex items-center justify-center gap-2 py-1.5 px-3 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-mono text-[10px] font-bold uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer border border-amber-500/20"
-                        title="Lock Dashboard for Demo Testing"
-                      >
-                        <Lock className="w-3.5 h-3.5 text-amber-500" />
-                        <span>{language === 'FR' ? 'Réinitialiser l\'Abonnement' : 'Reset Subscription Wall'}</span>
-                      </button>
-                    </div>
 
                     {/* Disconnection/Logout button as requested */}
                     <div className="border-t border-black/5 pt-2">

@@ -67,7 +67,7 @@ type PlanKey = keyof typeof STRIPE_PLANS;
 export const SaaSBillingTab: React.FC<SaaSBillingTabProps> = ({ addAuditLog, themeMode }) => {
   // Billing States
   const [currentPlan, setCurrentPlan] = useState<PlanKey>(() => {
-    return (localStorage.getItem('sapphir_current_plan') as PlanKey) || 'TRIAL';
+    return (localStorage.getItem('zaphir_current_plan') as PlanKey) || 'TRIAL';
   });
   const [subStatus, setSubStatus] = useState<'ACTIVE' | 'TRIALING' | 'PAST_DUE' | 'CANCELED'>('ACTIVE');
   const [cancelAtPeriodEnd, setCancelAtPeriodEnd] = useState<boolean>(false);

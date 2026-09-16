@@ -46,7 +46,7 @@ export class MewsIntegrationService {
   }
   
   /**
-   * Sync bidirectionnelle : crée/met à jour les Arrivals Ziffir depuis Mews
+   * Sync bidirectionnelle : crée/met à jour les Arrivals Zaphir depuis Mews
    */
   async syncReservationsToArrivals(hotelId: string) {
     const reservations = await this.getUpcomingReservations(hotelId);
@@ -57,7 +57,7 @@ export class MewsIntegrationService {
       try {
         const externalRef = m.Id;
         
-        // Mapping Mews → Ziffir
+        // Mapping Mews → Zaphir
         const guestName = `${m.Customer?.FirstName || ''} ${m.Customer?.LastName || ''}`.trim();
         const guestEmail = m.Customer?.Email;
         const guestPhone = m.Customer?.Phone;
@@ -118,7 +118,7 @@ export class MewsIntegrationService {
   }
   
   /**
-   * Push d'un event Ziffir vers Mews (ex: check-in effectué)
+   * Push d'un event Zaphir vers Mews (ex: check-in effectué)
    */
   async pushCheckInToMews(arrivalId: string) {
     const arrival = await prisma.arrival.findUnique({

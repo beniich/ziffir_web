@@ -155,10 +155,10 @@ export const getOrCreateUserProfile = async (user: User): Promise<any> => {
     const emailLower = (user.email || '').toLowerCase();
     let role: 'administrateur' | 'client' | 'hotel' = 'client';
     let dept = 'Premium Guest';
-    if (emailLower.endsWith('@zafir.academy') || emailLower.includes('admin')) {
+    if (emailLower.endsWith('@zaphir.com') || emailLower.includes('admin')) {
       role = 'administrateur';
       dept = 'Registry Headquarters';
-    } else if (emailLower.endsWith('@sapphir.academy') || emailLower.includes('hotel') || emailLower.includes('staff')) {
+    } else if (emailLower.endsWith('@zaphir.com') && (emailLower.includes('hotel') || emailLower.includes('staff'))) {
       role = 'hotel';
       dept = 'Front Desk Office';
     }
@@ -180,9 +180,9 @@ export const getOrCreateUserProfile = async (user: User): Promise<any> => {
     // Return a fallback profile in case of offline/rules error
     const emailLower = (user.email || '').toLowerCase();
     let role: 'administrateur' | 'client' | 'hotel' = 'client';
-    if (emailLower.endsWith('@zafir.academy') || emailLower.includes('admin')) {
+    if (emailLower.endsWith('@zaphir.com') || emailLower.includes('admin')) {
       role = 'administrateur';
-    } else if (emailLower.endsWith('@sapphir.academy') || emailLower.includes('hotel')) {
+    } else if (emailLower.includes('hotel')) {
       role = 'hotel';
     }
     return {

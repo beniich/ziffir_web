@@ -92,7 +92,7 @@ const DEFAULT_USERS: UserAccount[] = [
   { 
     id: 'usr-003', 
     name: 'Marcus Sterling', 
-    email: 'm.sterling@sapphir.academy', 
+    email: 'm.sterling@zaphir.com', 
     role: 'hotel', 
     status: 'Active', 
     createdAt: '2026-06-20T11:05:00Z', 
@@ -107,7 +107,7 @@ const DEFAULT_USERS: UserAccount[] = [
   { 
     id: 'usr-004', 
     name: 'Elena Petrova', 
-    email: 'e.petrova@zafir.academy', 
+    email: 'e.petrova@zaphir.com', 
     role: 'administrateur', 
     status: 'Active', 
     createdAt: '2026-06-10T08:00:00Z', 
@@ -121,7 +121,7 @@ const DEFAULT_USERS: UserAccount[] = [
   { 
     id: 'usr-005', 
     name: 'Viktor Kael', 
-    email: 'v.kael@sapphir.academy', 
+    email: 'v.kael@zaphir.com', 
     role: 'hotel', 
     status: 'Suspended', 
     createdAt: '2026-06-21T16:45:00Z', 

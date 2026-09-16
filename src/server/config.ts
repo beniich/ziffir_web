@@ -29,7 +29,7 @@ export const config = {
     port: parseInt(process.env.SMTP_PORT || '1025'), // MailHog par défaut en dev
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
-    from: process.env.SMTP_FROM || 'noreply@ziffir.local',
+    from: process.env.SMTP_FROM || 'noreply@zaphir.com',
   },
   
   database: {

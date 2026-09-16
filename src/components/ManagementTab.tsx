@@ -52,7 +52,7 @@ const INITIAL_ADMINS: AdminAccount[] = [
   {
     id: 'ADM-2041',
     username: 'maximilian.core',
-    email: 'm.vance@sapphir.academy',
+    email: 'm.vance@zaphir.com',
     assignedRole: 'Financial Auditor',
     permissions: {
       readLogs: true,
@@ -67,7 +67,7 @@ const INITIAL_ADMINS: AdminAccount[] = [
   {
     id: 'ADM-5509',
     username: 'seraphina.security',
-    email: 's.sterling@sapphir.academy',
+    email: 's.sterling@zaphir.com',
     assignedRole: 'Security Officer',
     permissions: {
       readLogs: true,
@@ -82,7 +82,7 @@ const INITIAL_ADMINS: AdminAccount[] = [
   {
     id: 'ADM-7112',
     username: 'viktor.kael',
-    email: 'v.kael@sapphir.academy',
+    email: 'v.kael@zaphir.com',
     assignedRole: 'Inventory Manager',
     permissions: {
       readLogs: false,
@@ -1042,7 +1042,7 @@ export const ManagementTab: React.FC<ManagementTabProps> = ({
                     value={newAdminEmail}
                     required
                     onChange={(e) => setNewAdminEmail(e.target.value)}
-                    placeholder="agent@sapphir.academy"
+                    placeholder="agent@zaphir.com"
                     className="w-full p-2.5 text-xs text-stone-100 placeholder-stone-600 rounded-xl bg-black/60 border border-stone-800 focus:border-[#c19a6b] focus:ring-0 focus:outline-none font-mono"
                   />
                 </div>

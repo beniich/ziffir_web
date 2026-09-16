@@ -12,7 +12,7 @@ interface SaaSCheckoutWallProps {
 const LOCALIZATION = {
   EN: {
     title: "Secure Checkout Gateway",
-    subtitle: "Authorize a premier subscription tier to access your Sapphir Academy administration cockpit.",
+    subtitle: "Authorize a premier subscription tier to access your Zaphir administration cockpit.",
     billingPeriod: "Billing Period",
     monthly: "Monthly",
     yearly: "Annual (20% Off)",
@@ -37,12 +37,12 @@ const LOCALIZATION = {
     step4: "Capturing invoice amount and processing webhooks...",
     step5: "Elevation complete! Preparing your luxury cockpit...",
     cardHolderPlaceholder: "e.g. Elena Petrova",
-    freeAccessBtn: "Instant Free Demo Access",
-    freeAccessDesc: "Skip payment simulator and explore all core rubrics & AI suites immediately.",
+    freeAccessBtn: "",
+    freeAccessDesc: "",
   },
   FR: {
     title: "Passerelle de Paiement Sécurisée",
-    subtitle: "Autorisez un abonnement premium pour accéder à votre cockpit d'administration de la Sapphir Academy.",
+    subtitle: "Autorisez un abonnement premium pour accéder à votre cockpit d'administration Zaphir.",
     billingPeriod: "Période de Facturation",
     monthly: "Mensuel",
     yearly: "Annuel (-20%)",
@@ -67,12 +67,12 @@ const LOCALIZATION = {
     step4: "Prélèvement de la facture et traitement des webhooks...",
     step5: "Élévation réussie ! Préparation de votre cockpit de luxe...",
     cardHolderPlaceholder: "ex. Elena Petrova",
-    freeAccessBtn: "Accès Démo Gratuit Instantané",
-    freeAccessDesc: "Passez le simulateur de paiement et explorez toutes les rubriques & suites IA immédiatement.",
+    freeAccessBtn: "",
+    freeAccessDesc: "",
   },
   RU: {
     title: "Безопасный Шлюз Оплаты",
-    subtitle: "Активируйте премиум-подписку для доступа к административной панели управления Sapphir Academy.",
+    subtitle: "Активируйте премиум-подписку для доступа к административной панели управления Zaphir.",
     billingPeriod: "Период Оплаты",
     monthly: "Ежемесячно",
     yearly: "Ежегодно (-20%)",
@@ -97,8 +97,8 @@ const LOCALIZATION = {
     step4: "Списание средств по инвойсу и запуск вебхуков...",
     step5: "Авторизация пройдена! Подготовка вашего кокпита...",
     cardHolderPlaceholder: "напр. Elena Petrova",
-    freeAccessBtn: "Мгновенный бесплатный демо-доступ",
-    freeAccessDesc: "Пропустите симулятор оплаты и сразу же изучите все ключевые разделы панели.",
+    freeAccessBtn: "",
+    freeAccessDesc: "",
   }
 };
 
@@ -197,8 +197,8 @@ export const SaaSCheckoutWall: React.FC<SaaSCheckoutWallProps> = ({
 
           // Unlocking delayed slightly to let them enjoy the completed screen and confetti
           setTimeout(() => {
-            localStorage.setItem('sapphir_has_active_subscription', 'true');
-            localStorage.setItem('sapphir_current_plan', selectedPlan);
+            localStorage.setItem('zaphir_has_active_subscription', 'true');
+            localStorage.setItem('zaphir_current_plan', selectedPlan);
             onPaymentSuccess(selectedPlan);
           }, 2400);
         }
@@ -566,30 +566,6 @@ export const SaaSCheckoutWall: React.FC<SaaSCheckoutWallProps> = ({
                       </>
                     )}
                   </button>
-
-                  {/* Free Demo Access Bypass Button */}
-                  <div className={`mt-4 pt-4 border-t text-center ${isDark ? 'border-slate-800' : 'border-stone-100'}`}>
-                    <p className={`text-[10px] font-sans mb-2.5 leading-normal ${isDark ? 'text-slate-400' : 'text-black font-semibold'}`}>
-                      {t.freeAccessDesc}
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        confetti({
-                          particleCount: 120,
-                          spread: 70,
-                          colors: ['#c19a6b', '#10b981', '#3b82f6', '#ffffff']
-                        });
-                        localStorage.setItem('sapphir_has_active_subscription', 'true');
-                        localStorage.setItem('sapphir_current_plan', selectedPlan);
-                        onPaymentSuccess(selectedPlan);
-                      }}
-                      className="w-full py-2.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 hover:text-emerald-400 font-mono font-bold text-xs uppercase rounded-xl transition-all border border-emerald-500/20 flex items-center justify-center gap-2 cursor-pointer"
-                    >
-                      <Unlock className="w-4.5 h-4.5" />
-                      {t.freeAccessBtn}
-                    </button>
-                  </div>
                 </div>
               </form>
             </div>

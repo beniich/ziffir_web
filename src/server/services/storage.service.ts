@@ -28,7 +28,7 @@ export class StorageService {
 
   constructor(prismaClient: any = defaultPrisma, s3Client?: any) {
     this.db = prismaClient;
-    this.defaultBucket = process.env.R2_BUCKET_NAME || process.env.S3_BUCKET_NAME || 'ziffir-assets';
+    this.defaultBucket = process.env.R2_BUCKET_NAME || process.env.S3_BUCKET_NAME || 'zaphir-assets';
 
     this.s3 = s3Client || new S3Client({
       region: process.env.AWS_REGION || 'auto',
