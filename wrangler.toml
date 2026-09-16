@@ -1,4 +1,5 @@
-name = "zaphir"
+# wrangler.toml
+name = 'ziffir-web'
 compatibility_date = "2026-07-15"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "dist"
