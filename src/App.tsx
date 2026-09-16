@@ -901,11 +901,11 @@ export default function App() {
           <p className="text-xs font-mono text-slate-500 font-bold uppercase tracking-widest">
             {language === 'FR' ? "L'HABILITATION DU COMPTE ACTIF EST INSUFFISANTE" : language === 'RU' ? "НЕДОСТАТОЧНО ПРАВ ПОЛЬЗОВАТЕЛЯ" : "SECURITY CLEARANCE RECONNAISSANCE REJECTED"}
           </p>
-          <div className="bg-black border-2 border-stone-850 rounded-2xl p-5 my-4 font-mono text-[11px] text-left text-slate-300 shadow-inner space-y-2">
+          <div className={`${themeMode === 'light' ? 'bg-white/80 border-stone-200 text-slate-600' : 'bg-black border-stone-850 text-slate-300'} border-2 rounded-2xl p-5 my-4 font-mono text-[11px] text-left shadow-inner space-y-2`}>
             <p className="text-[#c19a6b] font-bold">// SECURE LEDGER STATUS ENFORCEMENT:</p>
-            <p><span className="text-slate-400">Target Segment:</span> {tab.toUpperCase()}_v1</p>
-            <p><span className="text-slate-400">Your Session Role:</span> <span className="text-red-400 font-bold uppercase">{sessionRole}</span></p>
-            <p><span className="text-slate-400">Required Authorities:</span> <span className="text-emerald-400 font-bold uppercase">{allowed.join(' • ')}</span></p>
+            <p><span className={`${themeMode === 'light' ? 'text-slate-500' : 'text-slate-400'}`}>Target Segment:</span> {tab.toUpperCase()}_v1</p>
+            <p><span className={`${themeMode === 'light' ? 'text-slate-500' : 'text-slate-400'}`}>Your Session Role:</span> <span className="text-red-400 font-bold uppercase">{sessionRole}</span></p>
+            <p><span className={`${themeMode === 'light' ? 'text-slate-500' : 'text-slate-400'}`}>Required Authorities:</span> <span className="text-emerald-400 font-bold uppercase">{allowed.join(' • ')}</span></p>
           </div>
           <p className="text-xs text-slate-500 leading-relaxed font-sans">
             {language === 'FR' 
@@ -944,18 +944,18 @@ export default function App() {
           <p className="text-xs font-mono text-red-400 font-bold tracking-wider">
             RESTRICTED SYSTEM ARCHITECTURE IS SHIELDED
           </p>
-          <div className="bg-black/90 border-2 border-stone-800 rounded-2xl p-5 my-4 font-mono text-[11px] text-left text-slate-300 shadow-inner">
+          <div className={`${themeMode === 'light' ? 'bg-white/80 border-stone-200 text-slate-600' : 'bg-black/90 border-stone-800 text-slate-300'} border-2 rounded-2xl p-5 my-4 font-mono text-[11px] text-left shadow-inner`}>
             <p className="text-[#c19a6b] font-bold">// SECURE REGISTRY COMPLIANCE DETECTED:</p>
-            <p className="text-xs text-slate-100 font-bold mb-2">ACCESS_STAGE: {restrictedTab.toUpperCase()}_v2</p>
-            <div className="border-t border-stone-800 pt-2 space-y-1 text-[10px]">
-              <p><span className="text-slate-400">Current Node Level:</span> LEVEL-4 (Active Operator)</p>
-              <p><span className="text-slate-400">Required Clearance:</span> LEVEL-5 (Sovereign Proprietor)</p>
+            <p className={`text-xs ${themeMode === 'light' ? 'text-stone-800' : 'text-slate-100'} font-bold mb-2`}>ACCESS_STAGE: {restrictedTab.toUpperCase()}_v2</p>
+            <div className={`border-t ${themeMode === 'light' ? 'border-stone-200' : 'border-stone-800'} pt-2 space-y-1 text-[10px]`}>
+              <p><span className={`${themeMode === 'light' ? 'text-slate-500' : 'text-slate-400'}`}>Current Node Level:</span> LEVEL-4 (Active Operator)</p>
+              <p><span className={`${themeMode === 'light' ? 'text-slate-500' : 'text-slate-400'}`}>Required Clearance:</span> LEVEL-5 (Sovereign Proprietor)</p>
             </div>
           </div>
         </div>
 
         {/* Identity confirmation/fingerprint scanner card */}
-        <div className="bg-black/90 p-6 rounded-2xl w-full max-w-md flex flex-col items-center gap-4 relative border-2 border-stone-800 shadow-[0_0_15px_rgba(193,154,107,0.3)]">
+        <div className={`${themeMode === 'light' ? 'bg-white border-stone-200' : 'bg-black/90 border-stone-800'} p-6 rounded-2xl w-full max-w-md flex flex-col items-center gap-4 relative border-2 shadow-[0_0_15px_rgba(193,154,107,0.3)]`}>
           <h4 className="text-xs font-mono font-bold uppercase tracking-widest text-[#c19a6b]">Sovereign Identity Verification</h4>
           
           <button
@@ -969,7 +969,7 @@ export default function App() {
               }
             }}
             className={`w-20 h-20 rounded-2xl flex items-center justify-center border-2 transition-all duration-300 relative overflow-hidden ${
-              fingerprintScanStatus === 'idle' ? 'border-[#c19a6b]/45 bg-stone-900 text-[#c19a6b] hover:scale-105 hover:bg-stone-800' :
+              fingerprintScanStatus === 'idle' ? `border-[#c19a6b]/45 ${themeMode === 'light' ? 'bg-stone-100 hover:bg-stone-200' : 'bg-stone-900 hover:bg-stone-800'} text-[#c19a6b] hover:scale-105` :
               fingerprintScanStatus === 'scanning' ? 'border-sky-500 bg-sky-950/20 text-sky-400' :
               'border-emerald-500 bg-emerald-950/20 text-emerald-400'
             }`}
@@ -1005,8 +1005,10 @@ export default function App() {
     const isReady = countdown === 0 && overrideReason.trim().length > 0;
     
     return (
-      <div className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 backdrop-blur-md">
-        <div className="premium-border-glow p-8 rounded-3xl max-w-md w-full text-center bg-obsidian-900 border-2 border-stone-950 relative shadow-[0_0_30px_rgba(193,154,107,0.7)]">
+      <div className={`fixed inset-0 ${themeMode === 'light' ? 'bg-white/70' : 'bg-black/85'} flex items-center justify-center z-50 backdrop-blur-md`}>
+        <div className={`premium-border-glow p-8 rounded-3xl max-w-md w-full text-center border-2 relative shadow-[0_0_30px_rgba(193,154,107,0.7)] ${
+          themeMode === 'light' ? 'bg-[#fcfaf2] border-stone-200' : 'bg-obsidian-900 border-stone-950'
+        }`}>
           
           <button 
             onClick={() => {
@@ -1022,8 +1024,8 @@ export default function App() {
             <Cpu className="w-8 h-8" />
           </div>
 
-          <h3 className="text-lg font-serif-luxury font-bold text-slate-100 mb-2">Sovereign Authority Override</h3>
-          <p className="text-[11px] text-slate-400 mb-4 font-mono">
+          <h3 className={`text-lg font-serif-luxury font-bold ${themeMode === 'light' ? 'text-stone-900' : 'text-slate-100'} mb-2`}>Sovereign Authority Override</h3>
+          <p className={`text-[11px] ${themeMode === 'light' ? 'text-stone-500' : 'text-slate-400'} mb-4 font-mono`}>
             Direct vice-dean security bypass. Enter cryptographic log reason to launch sequence.
           </p>
 
@@ -1037,11 +1039,11 @@ export default function App() {
                 value={overrideReason}
                 onChange={(e) => setOverrideReason(e.target.value)}
                 placeholder="e.g. Authorized audit & maintenance synchronization"
-                className="w-full bg-black border-2 border-stone-900 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-[#c19a6b] font-mono shadow-inner"
+                className={`w-full ${themeMode === 'light' ? 'bg-white border-stone-300 text-stone-800' : 'bg-black border-stone-900 text-slate-100'} border-2 rounded-xl p-3 text-xs focus:outline-none focus:border-[#c19a6b] font-mono shadow-inner`}
               />
             </div>
 
-            <div className="bg-black p-4 rounded-xl border-2 border-stone-950 text-center relative overflow-hidden">
+            <div className={`${themeMode === 'light' ? 'bg-stone-50 border-stone-200' : 'bg-black border-stone-950'} p-4 rounded-xl border-2 text-center relative overflow-hidden`}>
               <span className="text-[10px] font-mono tracking-widest text-[#c19a6b] uppercase block mb-1">Calibration Progress</span>
               
               {countdown > 0 ? (
@@ -1090,10 +1092,12 @@ export default function App() {
                 }
               }}
               disabled={!isReady}
-              className={`w-full py-3 rounded-xl text-xs font-mono uppercase tracking-widest transition shadow font-bold border-2 border-stone-950 ${
+              className={`w-full py-3 rounded-xl text-xs font-mono uppercase tracking-widest transition shadow font-bold border-2 ${
+                themeMode === 'light' ? 'border-stone-300' : 'border-stone-950'
+              } ${
                 isReady 
                   ? 'bg-[#c19a6b] text-black hover:bg-white' 
-                  : 'bg-stone-900 text-stone-500 cursor-not-allowed'
+                  : `${themeMode === 'light' ? 'bg-stone-100 text-stone-400' : 'bg-stone-900 text-stone-500'} cursor-not-allowed`
               }`}
             >
               Sign override block (Level 5)
@@ -1108,9 +1112,11 @@ export default function App() {
   const renderSettingsDrawer = () => {
     if (!showSettings) return null;
     return (
-      <div className="fixed inset-y-0 right-0 w-80 max-w-full bg-black/95 backdrop-blur-md border-l-2 border-stone-850 shadow-[0_0_35px_rgba(0,0,0,0.9)] z-50 p-5 sm:p-6 flex flex-col justify-between animate-fade-in text-stone-100">
+      <div className={`fixed inset-y-0 right-0 w-80 max-w-full backdrop-blur-md border-l-2 shadow-[0_0_35px_rgba(0,0,0,0.9)] z-50 p-5 sm:p-6 flex flex-col justify-between animate-fade-in ${
+        themeMode === 'light' ? 'bg-white/95 border-stone-200 text-stone-900' : 'bg-black/95 border-stone-850 text-stone-100'
+      }`}>
         <div className="space-y-5 overflow-y-auto max-h-[85vh] scrollbar-none pr-1">
-          <div className="flex items-center justify-between border-b border-stone-800 pb-3">
+          <div className={`flex items-center justify-between border-b ${themeMode === 'light' ? 'border-stone-200' : 'border-stone-800'} pb-3`}>
             <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[#c19a6b] flex items-center gap-2">
               <Settings className="w-4 h-4 animate-spin-slow" /> {t('settingsHeading')}
             </h3>
@@ -1132,8 +1138,8 @@ export default function App() {
                 }}
                 className={`py-2 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-1 border-2 ${
                   themeMode === 'dark'
-                    ? 'bg-black border-[#c19a6b] text-[#c19a6b]'
-                    : 'bg-stone-900 border-transparent text-slate-400 hover:text-slate-200'
+                    ? `${themeMode === 'light' ? 'bg-white' : 'bg-black'} border-[#c19a6b] text-[#c19a6b]`
+                    : `${themeMode === 'light' ? 'bg-stone-100 text-stone-500' : 'bg-stone-900 text-slate-400'} border-transparent hover:text-slate-200`
                 }`}
               >
                 <Moon className="w-3.5 h-3.5" /> {t('themeDark')}
@@ -1145,8 +1151,8 @@ export default function App() {
                 }}
                 className={`py-2 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-1 border-2 ${
                   themeMode === 'light'
-                    ? 'bg-white border-black text-black'
-                    : 'bg-stone-900 border-transparent text-stone-400 hover:text-stone-100'
+                    ? `bg-white ${themeMode === 'light' ? 'border-[#c19a6b]' : 'border-black'} text-black`
+                    : `${themeMode === 'light' ? 'bg-stone-100 text-stone-500 hover:text-stone-700' : 'bg-stone-900 text-stone-400 hover:text-stone-100'} border-transparent`
                 }`}
               >
                 <Sun className="w-3.5 h-3.5 text-amber-500" /> {t('themeLight')}
@@ -1167,8 +1173,8 @@ export default function App() {
                 }}
                 className={`p-2.5 rounded-xl border-2 text-left text-xs font-mono font-bold flex justify-between items-center ${
                   styleMode === 'standard' 
-                    ? 'bg-black border-[#c19a6b] text-[#c19a6b]' 
-                    : 'bg-stone-900 border-transparent text-slate-300 hover:bg-stone-850'
+                    ? `${themeMode === 'light' ? 'bg-white' : 'bg-black'} border-[#c19a6b] text-[#c19a6b]` 
+                    : `${themeMode === 'light' ? 'bg-stone-100 text-stone-500' : 'bg-stone-900 text-slate-300 hover:bg-stone-850'} border-transparent`
                 }`}
               >
                 <span>{t('aestheticStandard')}</span>
@@ -1182,8 +1188,8 @@ export default function App() {
                 }}
                 className={`p-2.5 rounded-xl border-2 text-left text-xs font-mono font-bold flex justify-between items-center ${
                   styleMode === 'cyberpunk' 
-                    ? 'bg-black border-[#00ffff] text-[#00ffff]' 
-                    : 'bg-stone-900 border-transparent text-slate-300 hover:bg-stone-850'
+                    ? `${themeMode === 'light' ? 'bg-white' : 'bg-black'} border-[#00ffff] text-[#00ffff]` 
+                    : `${themeMode === 'light' ? 'bg-stone-100 text-stone-500' : 'bg-stone-900 text-slate-300 hover:bg-stone-850'} border-transparent`
                 }`}
               >
                 <span>{t('aestheticCyberpunk')}</span>
@@ -1197,8 +1203,8 @@ export default function App() {
                 }}
                 className={`p-2.5 rounded-xl border-2 text-left text-xs font-mono font-bold flex justify-between items-center ${
                   styleMode === 'luxury' 
-                    ? 'bg-black border-[#ffd700] text-[#ffd700]' 
-                    : 'bg-stone-900 border-transparent text-slate-300 hover:bg-stone-850'
+                    ? `${themeMode === 'light' ? 'bg-white text-stone-900' : 'bg-black text-[#ffd700]'} border-[#ffd700]` 
+                    : `${themeMode === 'light' ? 'bg-stone-100 text-stone-500' : 'bg-stone-900 text-slate-300 hover:bg-stone-850'} border-transparent`
                 }`}
               >
                 <span>{t('aestheticLuxury')}</span>
@@ -1226,7 +1232,7 @@ export default function App() {
                     addAuditLog('GLOW_PIGMENT_RECALIBRATION', `Adjusted parity pigment lightwave to ${gem.label.toUpperCase()}.`, 'AUTHORIZED');
                   }}
                   className={`flex flex-col items-center gap-1 p-1 py-2 rounded-xl border-2 transition ${
-                    colorScheme === gem.name ? 'bg-black border-[#c19a6b]' : 'bg-stone-900 border-transparent hover:bg-stone-850'
+                    colorScheme === gem.name ? `${themeMode === 'light' ? 'bg-white' : 'bg-black'} border-[#c19a6b]` : `${themeMode === 'light' ? 'bg-stone-100' : 'bg-stone-900 hover:bg-stone-850'} border-transparent`
                   }`}
                 >
                   <span className="w-5 h-5 rounded-full" style={{ backgroundColor: gem.code, boxShadow: `0 0 10px ${gem.code}` }} />
@@ -1237,11 +1243,11 @@ export default function App() {
           </div>
 
           {/* 4. Active Clearance Role Toggle */}
-          <div className="space-y-2 pt-2 border-t border-stone-800">
+          <div className={`space-y-2 pt-2 border-t ${themeMode === 'light' ? 'border-stone-200' : 'border-stone-800'}`}>
             <label className="text-[10px] font-mono uppercase tracking-widest text-slate-400 block font-bold">
               {t('securityRoleHeading')}
             </label>
-            <div className="flex bg-black p-1 rounded-xl border-2 border-stone-950">
+            <div className={`flex ${themeMode === 'light' ? 'bg-white border-stone-300' : 'bg-black border-stone-950'} p-1 rounded-xl border-2`}>
               <button
                 onClick={() => {
                   setUserRole('operator');
@@ -1274,11 +1280,11 @@ export default function App() {
           </div>
 
           {/* 5. Aesthetic Language Matrix */}
-          <div className="space-y-2 pt-2 border-t border-stone-800">
+          <div className={`space-y-2 pt-2 border-t ${themeMode === 'light' ? 'border-stone-200' : 'border-stone-800'}`}>
             <label className="text-[10px] font-mono uppercase tracking-widest text-slate-400 flex items-center gap-1 font-bold">
               <Languages className="w-3.5 h-3.5 text-[#c19a6b]" /> {t('languageMatrix')}
             </label>
-            <div className="grid grid-cols-3 gap-1.5 bg-black p-1 rounded-xl border-2 border-stone-950">
+            <div className={`grid grid-cols-3 gap-1.5 ${themeMode === 'light' ? 'bg-white border-stone-300' : 'bg-black border-stone-950'} p-1 rounded-xl border-2`}>
               {[
                 { code: 'EN', name: 'English', flag: '🇬🇧' },
                 { code: 'FR', name: 'Français', flag: '🇫🇷' },
@@ -1293,8 +1299,8 @@ export default function App() {
                   }}
                   className={`py-2 rounded-lg text-xs font-mono font-bold transition flex flex-col items-center justify-center border-2 ${
                     language === lang.code
-                      ? 'bg-black border-[#c19a6b] text-[#c19a6b] font-bold'
-                      : 'bg-stone-900 border-transparent text-stone-400 hover:text-stone-200 hover:bg-stone-850'
+                      ? `${themeMode === 'light' ? 'bg-white' : 'bg-black'} border-[#c19a6b] text-[#c19a6b] font-bold`
+                      : `${themeMode === 'light' ? 'bg-stone-100 text-stone-500' : 'bg-stone-900 hover:bg-stone-850 text-stone-400 hover:text-stone-200'} border-transparent`
                   }`}
                 >
                   <span className="text-[11px] mb-0.5">{lang.flag}</span>
@@ -1305,13 +1311,13 @@ export default function App() {
           </div>
 
           {/* 6. Sovereign Wallpaper Background / Image Preservation */}
-          <div className="space-y-2 pt-2 border-t border-stone-800">
+          <div className={`space-y-2 pt-2 border-t ${themeMode === 'light' ? 'border-stone-200' : 'border-stone-800'}`}>
             <label className="text-[10px] font-mono uppercase tracking-widest text-slate-400 flex items-center gap-1 font-bold">
               <Layers className="w-3.5 h-3.5 text-[#c19a6b]" /> {t('wallpaperHeading')}
             </label>
             
             {/* Presets Grid */}
-            <div className="grid grid-cols-3 gap-1.5 bg-black p-1 rounded-xl border-2 border-stone-950">
+            <div className={`grid grid-cols-3 gap-1.5 ${themeMode === 'light' ? 'bg-white border-stone-300' : 'bg-black border-stone-950'} p-1 rounded-xl border-2`}>
               {[
                 { 
                   name: 'Gold Spa', 
@@ -1339,8 +1345,8 @@ export default function App() {
                   }}
                   className={`py-1.5 rounded-lg text-[10px] font-mono font-bold transition flex flex-col items-center justify-center border-2 ${
                     currentWallpaper === preset.url
-                      ? 'bg-black border-[#c19a6b] text-[#c19a6b] font-bold'
-                      : 'bg-stone-900 border-transparent text-stone-400 hover:text-stone-200 hover:bg-stone-850'
+                      ? `${themeMode === 'light' ? 'bg-white' : 'bg-black'} border-[#c19a6b] text-[#c19a6b] font-bold`
+                      : `${themeMode === 'light' ? 'bg-stone-100 text-stone-500' : 'bg-stone-900 hover:bg-stone-850 text-stone-400 hover:text-stone-200'} border-transparent`
                   }`}
                   title={preset.name}
                 >
@@ -1363,14 +1369,14 @@ export default function App() {
                     setCurrentWallpaper(newUrl);
                     localStorage.setItem('zafir_current_wallpaper', newUrl);
                   }}
-                  className="w-full bg-stone-900 border border-stone-800 text-[10px] font-mono text-[#c19a6b] px-2.5 py-1.5 rounded-lg focus:outline-none focus:border-[#c19a6b]"
+                  className={`w-full ${themeMode === 'light' ? 'bg-white border-stone-300 text-stone-800' : 'bg-stone-900 border-stone-800 text-[#c19a6b]'} border text-[10px] font-mono px-2.5 py-1.5 rounded-lg focus:outline-none focus:border-[#c19a6b]`}
                 />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="pt-4 border-t border-stone-850 text-center font-mono text-[9px] text-stone-500">
+        <div className={`pt-4 border-t ${themeMode === 'light' ? 'border-stone-200' : 'border-stone-850'} text-center font-mono text-[9px] text-stone-500`}>
           <p>{t('stylesEngine')}</p>
           <p className="text-[#c19a6b]">{t('sovereignLive')}</p>
         </div>
@@ -1448,7 +1454,7 @@ export default function App() {
       {/* Floating Settings Button in bottom-right corner */}
       <button
         onClick={() => setShowSettings(!showSettings)}
-        className="fixed bottom-6 right-6 z-50 p-3.5 rounded-full bg-black border-2 border-stone-800 shadow-[0_0_15px_rgba(193,154,107,0.85)] text-[#c19a6b] hover:text-white hover:scale-110 active:scale-95 transition-all duration-200"
+        className={`fixed bottom-6 right-6 z-50 p-3.5 rounded-full ${themeMode === 'light' ? 'bg-white border-stone-300 shadow-[0_0_15px_rgba(0,0,0,0.1)] text-[#c19a6b]' : 'bg-black border-stone-800 shadow-[0_0_15px_rgba(193,154,107,0.85)] text-[#c19a6b] hover:text-white'} border-2 hover:scale-110 active:scale-95 transition-all duration-200`}
         title="Custom Sovereign Aesthetics Deck"
       >
         <Settings className="w-5.5 h-5.5 animate-[spin_10s_linear_infinite]" />
