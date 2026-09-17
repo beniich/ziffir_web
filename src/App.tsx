@@ -26,7 +26,8 @@ import {
   Mail,
   ChevronLeft,
   Menu,
-  Wine
+  Wine,
+  Sparkles
 } from 'lucide-react';
 import { initAuth, logout, getOrCreateUserProfile } from './firebase';
 import { User as FirebaseUser } from 'firebase/auth';
@@ -44,6 +45,7 @@ import { VaultTab } from './components/VaultTab';
 import { MembershipsTab } from './components/MembershipsTab';
 import { MaintenanceTab } from './components/MaintenanceTab';
 import { OmniStreamTab } from './components/OmniStreamTab';
+import { GroundedAITab } from './components/GroundedAITab';
 import { LedgerTab } from './components/LedgerTab';
 import { ManagementTab } from './components/ManagementTab';
 import { HospitalityManagerTab } from './components/HospitalityManagerTab';
@@ -141,6 +143,8 @@ const translations = {
     tabMemberships: "Club VIP",
     tabMaintenance: "3D Facility",
     tabOmniStream: "Omni Stream",
+    tabGroundedAI: "Grounded AI",
+    tabGroundedAIHeader: "Zaphir Sovereign Intelligence: Real-Time Grounding (Search & Maps)",
     tabLedger: "Academic Ledger",
     tabManagement: "Personnel Matrix",
     tabHospitality: "Hôtellerie & Stocks",
@@ -197,6 +201,8 @@ const translations = {
     tabMemberships: "Club VIP",
     tabMaintenance: "Maintenance 3D",
     tabOmniStream: "Flux Omni",
+    tabGroundedAI: "Intelligence Groundée",
+    tabGroundedAIHeader: "Intelligence Souveraine Zaphir : Ancrage Temps Réel (Google Search & Maps)",
     tabLedger: "Registre Académique",
     tabManagement: "Supervision",
     tabHospitality: "Hôtellerie & Stocks",
@@ -1786,6 +1792,23 @@ export default function App() {
             <span className="text-xs font-semibold tracking-wider uppercase font-mono font-sans-luxury">{t('tabOmniStream')}</span>
           </button>
 
+          <button
+            onClick={() => navigateToTab('grounded-ai')}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 w-full shrink-0 lg:shrink text-left ${
+              activeTab === 'grounded-ai'
+                ? 'bg-[#c19a6b]/20 border border-[#c19a6b]/40 text-[#7c5a30] font-bold shadow-sm font-sans-luxury'
+                : 'text-slate-700 hover:text-slate-900 hover:bg-white/30 border border-transparent'
+            }`}
+          >
+            <Sparkles className="w-4 h-4 text-[#c19a6b]" />
+            <span className="text-xs font-semibold tracking-wider uppercase font-mono font-sans-luxury">
+              {language === 'FR' ? 'Grounded AI' : 'Grounded AI'}
+            </span>
+            <span className="ml-auto text-[9px] bg-[#c19a6b]/25 text-[#7c5a30] dark:text-[#c19a6b] px-1.5 py-0.2 rounded border border-[#c19a6b]/40 font-bold font-mono">
+              MAPS+WEB
+            </span>
+          </button>
+
           <div className="hidden lg:block border-t border-slate-350/50 my-4" />
 
           <button
@@ -1945,6 +1968,13 @@ export default function App() {
               {activeTab === 'maintenance' && <MaintenanceTab addAuditLog={addAuditLog} />}
 
               {activeTab === 'omni-stream' && <OmniStreamTab />}
+
+              {activeTab === 'grounded-ai' && (
+                <GroundedAITab
+                  language={language}
+                  addAuditLog={addAuditLog}
+                />
+              )}
 
               {activeTab === 'ledger' && (
                 <LedgerTab

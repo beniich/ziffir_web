@@ -18,15 +18,28 @@ import {
   getDoc
 } from 'firebase/firestore';
 
-import firebaseConfig from '../firebase-applet-config.json';
+import rawFirebaseConfig from '../firebase-applet-config.json';
+
+const resolvedApiKey = 
+  import.meta.env.VITE_FIREBASE_API_KEY || 
+  (rawFirebaseConfig.apiKey && rawFirebaseConfig.apiKey !== 'PROCESS_ENV_VITE_FIREBASE_API_KEY' 
+    ? rawFirebaseConfig.apiKey 
+    : 'AIzaSyD7mgV3ypfuBdaTaCSPEZEEOgBG6Kxrb0I');
+
+const resolvedConfig = {
+  ...rawFirebaseConfig,
+  apiKey: resolvedApiKey,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || rawFirebaseConfig.projectId,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || rawFirebaseConfig.authDomain,
+};
 
 // Initialize Firebase App
-export const app = initializeApp(firebaseConfig);
+export const app = initializeApp(resolvedConfig);
 
 // Initialize Firestore with specific databaseId from config
 export const db = getFirestore(
   app, 
-  firebaseConfig.firestoreDatabaseId || "ai-studio-c03eed34-6b98-437a-b865-3de7e2a9ecd6"
+  rawFirebaseConfig.firestoreDatabaseId || "ai-studio-c03eed34-6b98-437a-b865-3de7e2a9ecd6"
 );
 
 // Initialize Auth

@@ -214,7 +214,7 @@ export const ArrivalsTab: React.FC<ArrivalsTabProps> = ({ vipGuests, flights, us
   const [selectedAirportId, setSelectedAirportId] = useState<string>('zafir');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [zoomScale, setZoomScale] = useState<number>(14); // local zoom factor (1 to 20)
-  const [mapStyle, setMapStyle] = useState<'standard' | 'satellite' | 'radar-glow'>('radar-glow');
+  const [mapStyle, setMapStyle] = useState<'standard' | 'satellite' | 'radar-glow' | 'google-maps'>('radar-glow');
 
   // Interactive Point of Interest selector for Zafir Hotel grounds
   const [selectedPoi, setSelectedPoi] = useState<{ name: string; lat: number; lon: number; description: string } | null>(null);
@@ -305,6 +305,8 @@ export const ArrivalsTab: React.FC<ArrivalsTabProps> = ({ vipGuests, flights, us
   const latMax = mapCenterCoords.lat + bboxOffset;
   
   const osmEmbedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${lonMin}%2C${latMin}%2C${lonMax}%2C${latMax}&layer=mapnik&marker=${mapCenterCoords.lat}%2C${mapCenterCoords.lon}`;
+  const googleMapsEmbedUrl = `https://maps.google.com/maps?q=${mapCenterCoords.lat},${mapCenterCoords.lon}&z=${Math.min(18, Math.max(4, zoomScale))}&output=embed`;
+  const activeMapUrl = mapStyle === 'google-maps' ? googleMapsEmbedUrl : osmEmbedUrl;
 
   // Interactive Gesture Functions
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -568,10 +570,10 @@ export const ArrivalsTab: React.FC<ArrivalsTabProps> = ({ vipGuests, flights, us
                   <span className="absolute left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#c19a6b] to-transparent z-10 scan-bar pointer-events-none" />
                 )}
 
-                {/* THE ACTUAL LIVE STREET MAPS MAP */}
+                {/* THE ACTUAL LIVE MAP TERMINAL */}
                 <iframe
-                  title="Live OpenStreetMap Tracking Terminal"
-                  src={osmEmbedUrl}
+                  title="Live Tracking Terminal"
+                  src={activeMapUrl}
                   className={`w-full h-full border-none transition-all duration-300 absolute inset-0 ${
                     mapStyle === 'radar-glow' 
                       ? 'map-darkness-filter' 
@@ -677,6 +679,16 @@ export const ArrivalsTab: React.FC<ArrivalsTabProps> = ({ vipGuests, flights, us
                     STREET VECT
                   </button>
                   <button
+                    onClick={() => setMapStyle('google-maps')}
+                    className={`px-2 py-0.5 rounded-lg border uppercase font-extrabold flex items-center gap-1 ${
+                      mapStyle === 'google-maps'
+                        ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-600 dark:text-emerald-400'
+                        : 'border-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-100'
+                    }`}
+                  >
+                    📍 GOOGLE MAPS
+                  </button>
+                  <button
                     onClick={() => setMapStyle('satellite')}
                     className={`px-2 py-0.5 rounded-lg border uppercase font-extrabold ${
                       mapStyle === 'satellite'
@@ -770,7 +782,7 @@ export const ArrivalsTab: React.FC<ArrivalsTabProps> = ({ vipGuests, flights, us
                   {/* LARGE IFRAME MAP OF REAL-TIME GPS COORDINATES */}
                   <iframe
                     title="Detailed Jet-Way Monitor Map"
-                    src={osmEmbedUrl}
+                    src={activeMapUrl}
                     className={`w-full h-full border-none transition-all duration-300 absolute inset-0 ${
                       mapStyle === 'radar-glow' 
                         ? 'map-darkness-filter' 
