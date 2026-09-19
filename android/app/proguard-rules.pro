@@ -5,17 +5,23 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# 1. Preserver les annotations et le pont Javascript pour Capacitor / WebView
+-keepattributes *Annotation*
+-keepattributes JavascriptInterface
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# 2. Preserver les plugins et le core Capacitor (Zaphir)
+-keep public class com.getcapacitor.** { *; }
+-keep public class * extends com.getcapacitor.Plugin { *; }
+-keep public class * extends com.getcapacitor.BridgePlugin { *; }
+
+# 3. Plugins Cordova
+-keep public class org.apache.cordova.** { *; }
+
+# 4. Bibliothèques réseau & utilitaires
+-dontwarn okhttp3.**
+-dontwarn okio.**
+
